@@ -157,13 +157,13 @@ export function SessionDetail({ data }: { data: SessionData }) {
             {unknown > 0 ? "출석부 열기" : "출석부 보기"}
           </Link>
         )}
-        {phase === "upcoming" && (
-          <div className="flex flex-col items-end gap-1">
-            <Button disabled title="휴강 처리 화면은 준비 중이에요">
-              휴강 처리
-            </Button>
-            <span className="text-caption text-fg-muted">휴강 처리 화면은 준비 중이에요</span>
-          </div>
+        {phase !== "ended" && (
+          <Link
+            href={`/admin/schedule/${s.id}/cancel`}
+            className="rounded-md bg-secondary px-4 py-2 text-label-md text-on-secondary hover:bg-secondary-hover"
+          >
+            {phase === "cancelled" ? "휴강 처리 결과" : "휴강 처리"}
+          </Link>
         )}
       </header>
 
