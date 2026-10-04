@@ -63,7 +63,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen bg-canvas">
       <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col gap-0.5 border-r border-line bg-surface px-3 py-4 lg:flex">
         <button type="button" className="mb-3 flex cursor-pointer items-center gap-2 rounded-md p-2 text-left hover:bg-subtle">
-          <span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary text-label-md text-on-primary">바</span>
+          <span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary text-label-md text-on-primary">재</span>
           <span className="flex min-w-0 flex-1 flex-col">
             <span className="text-label-md text-fg">재진필라테스</span>
             <span className="text-caption text-fg-muted">강남점 · 사업장 오너</span>

@@ -15,7 +15,7 @@ export default async function PushPage({ searchParams }: { searchParams: Promise
       <p className="text-body-md text-white/80">10월 14일 수요일</p>
       <Link href="/mobile/approvals/apr-1" className="mt-32 flex w-full flex-col gap-1 rounded-2xl bg-white/12 p-4 text-left backdrop-blur hover:bg-white/16">
         <span className="flex items-center gap-2 text-caption text-white/70">
-          <span className="flex size-5 items-center justify-center rounded-sm bg-white text-[11px] font-bold text-black">바</span>
+          <span className="flex size-5 items-center justify-center rounded-sm bg-white text-[11px] font-bold text-black">재</span>
           재진필라테스
           <span className="ml-auto">지금</span>
         </span>
