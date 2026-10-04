@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { CheckCircle } from "lucide-react";
 import { InfoBox, NoticeHead } from "@/components/member/notice";
 import { BottomSheet, SummaryRows } from "@/components/member/bottom-sheet";
 import { Button } from "@/components/ui/button";
@@ -12,17 +13,17 @@ import { cn } from "@/lib/cn";
 const linkBtn = "flex w-full items-center justify-center rounded-md px-4 py-3 text-label-md";
 
 /*
- * Figma: Member / 참석 확인 (127:607 · 128:721 · 127:743 · 127:871)
- * 내일 10:00 수업은 변경·취소 마감(24시간 전)이 이미 지났다. 그래서 '못 가요'는 바로 취소가 아니라 스튜디오에 불참을 알리고,
- * 스튜디오가 확인 후 자리를 대기자에게 돌린다. (Figma의 '마감 전이라 바로 취소돼요'는 정책 확인 필요)
+ * Figma: Member / 참석 확인 (127:607 · 128:721 · 127:743 · 127:871) · 기능 F-HCFDIB, F-DMWGKQ
+ * 참석 확인에 '못 가요'로 답하면 변경·취소 마감(24시간 전)이 지났어도 회차 시작 전까지 바로 취소할 수 있다.
+ * 취소 사유는 '참석 확인 응답'으로 기록하고 늦은 취소로 세지 않는다. 자리는 바로 대기자에게 안내된다.
  */
 export function AttendanceView() {
-  const [state, setState] = useState<"ask" | "coming" | "notified">("ask");
+  const [state, setState] = useState<"ask" | "coming" | "cancelled">("ask");
   const [sheet, setSheet] = useState(false);
   const rows: [string, string][] = [
     ["일시", "10/15(목) 10:00 · 50분"],
     ["프로그램", "그룹 필라테스 · 박준서 강사"],
-    ["내 예약", state === "notified" ? "확정 · 불참 알림 보냄" : "확정"],
+    ["내 예약", "확정"],
   ];
 
   if (state === "coming")
@@ -36,14 +37,24 @@ export function AttendanceView() {
       </main>
     );
 
-  if (state === "notified")
+  if (state === "cancelled")
     return (
       <main className="flex flex-col gap-5 p-4">
-        <NoticeHead chip="불참 알림" tone="neutral" title="스튜디오에 알렸어요" desc="알려 주셔서 고마워요. 담당자가 확인하면 예약이 취소되고 기다리는 분께 자리가 안내돼요." />
-        <InfoBox rows={rows} />
-        <Link href="/member/schedule" className={cn(linkBtn, "bg-secondary text-on-secondary")}>
-          다른 회차 보기
-        </Link>
+        <NoticeHead chip="취소됨" tone="neutral" title="예약을 취소했어요" desc="알려 주셔서 고마워요." />
+        <InfoBox
+          rows={[
+            ["취소한 예약", "10/15(목) 10:00 그룹 필라테스"],
+            ["다음", "기다리는 분께 자리가 안내돼요"],
+          ]}
+        />
+        <div className="grid grid-cols-2 gap-2">
+          <Link href="/member/schedule" className={cn(linkBtn, "bg-secondary text-on-secondary")}>
+            다른 회차 보기
+          </Link>
+          <Link href="/member/bookings" className={cn(linkBtn, "text-fg hover:bg-subtle")}>
+            내 예약 보기
+          </Link>
+        </div>
       </main>
     );
 
@@ -59,24 +70,27 @@ export function AttendanceView() {
           못 가요
         </Button>
       </div>
-      <BottomSheet open={sheet} onClose={() => setSheet(false)} title="못 오신다고 알릴까요?">
+      <BottomSheet open={sheet} onClose={() => setSheet(false)} title="내일 10:00 예약을 취소할까요?">
         <SummaryRows
           rows={[
             ["회차", "10/15(목) 10:00 · 50분"],
             ["프로그램", "그룹 필라테스 · 박준서 강사"],
-            ["변경·취소", "마감(10/14 10:00)이 지나 앱에서 바로 취소되지는 않아요"],
+            ["변경·취소", "참석 확인 응답이라 마감(10/14 10:00)이 지났어도 바로 취소돼요"],
           ]}
         />
-        <p className="text-body-sm text-fg-secondary">알리면 스튜디오가 확인한 뒤 예약을 취소하고, 기다리는 분께 자리를 안내해요.</p>
+        <p className="flex items-center gap-2 text-body-sm text-fg-secondary">
+          <CheckCircle size={16} className="text-success-fg" aria-hidden />
+          취소하면 기다리는 분께 자리가 안내돼요
+        </p>
         <Button
-          variant="primary"
+          variant="danger"
           className="w-full py-3"
           onClick={() => {
             setSheet(false);
-            setState("notified");
+            setState("cancelled");
           }}
         >
-          못 간다고 알리기
+          예약 취소하기
         </Button>
         <Button variant="ghost" className="w-full" onClick={() => setSheet(false)}>
           돌아가기

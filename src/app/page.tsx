@@ -9,7 +9,7 @@ const screens = [
   { href: "/member/schedule", title: "수업 (회원)", desc: "회원 모바일 · 주간 회차, 신청 시트, 대기 신청" },
   { href: "/member/bookings", title: "내 예약 (회원)", desc: "회원 모바일 · 다가오는 예약, 대기 중, 지난 이용" },
   { href: "/member/notifications", title: "내 알림 (회원)", desc: "회원 모바일 · 대기 결과, 빈자리, 참석 확인 알림" },
-  { href: "/member/notices/attendance", title: "참석 확인 (회원)", desc: "참석할게요 / 못 가요(마감 후엔 스튜디오에 알림)" },
+  { href: "/member/notices/attendance", title: "참석 확인 (회원)", desc: "참석할게요 / 못 가요(참석 확인 응답은 마감 후에도 바로 취소)" },
   { href: "/member/notices/open-seat", title: "빈자리 안내 (회원)", desc: "자리 잡기 시트, 예약됨, 이미 마감" },
   { href: "/member/notices/waitlist", title: "대기 결과 (회원)", desc: "자동 확정 안 됨 / ?state=auto 자동 확정됨" },
   { href: "/member/notices/cancelled-class", title: "휴강 안내 (회원 · 강도윤 예시)", desc: "옮길 회차 고르기, 취소" },

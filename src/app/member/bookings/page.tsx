@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Info } from "lucide-react";
 import { MemberHeader } from "@/components/member/member-shell";
 import { WaitingCard } from "@/components/member/waiting-card";
@@ -42,6 +43,11 @@ export default function MemberBookingsPage() {
                     {s.coach} · {s.room} · {deadlinePassed ? "변경·취소 마감이 지났어요" : `변경·취소 ${s.deadline}까지`}
                   </span>
                   <span className="self-start"><StatusChip status="confirmed" /></span>
+                  {deadlinePassed && (
+                    <Link href="/member/notices/attendance" className="text-caption text-link">
+                      참석 확인에서 못 간다고 하시면 수업 전까지 취소할 수 있어요
+                    </Link>
+                  )}
                 </div>
                 <button
                   type="button"
