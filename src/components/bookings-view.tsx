@@ -144,7 +144,7 @@ function DetailPanel({
             회원 상세
           </Link>
           {row.status === "confirmed" && row.attendance === "unknown" && (
-            <Link href="/admin/today#attendance" className="rounded-md bg-secondary px-3 py-1 text-label-sm text-on-secondary hover:bg-secondary-hover">
+            <Link href="/admin/schedule/attendance" className="rounded-md bg-secondary px-3 py-1 text-label-sm text-on-secondary hover:bg-secondary-hover">
               출석부 열기
             </Link>
           )}

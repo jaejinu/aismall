@@ -92,7 +92,9 @@ export default function TodayPage() {
               <span className="text-label-md text-fg">출석 미확인 · 오늘 10:00 그룹 필라테스</span>
               <span className="text-body-sm text-fg-secondary">5명 중 3명 기록 · 김하늘·정다은 미확인</span>
             </div>
-            <Button size="sm">출석부 열기</Button>
+            <Link href="/admin/schedule/attendance" className="shrink-0 rounded-md bg-secondary px-3 py-1 text-label-sm text-on-secondary hover:bg-secondary-hover">
+              출석부 열기
+            </Link>
           </div>
         </section>
       </main>

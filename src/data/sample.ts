@@ -107,6 +107,6 @@ export const approvals: ApprovalRequest[] = [
 export const briefing = [
   { kind: "clock", text: "승인 대기 3건 · 가장 급한 예약 요청은 2시간 후 만료돼요", href: "/admin/approvals" },
   { kind: "risk", text: "14:00 기구 필라테스에 노쇼 위험 1명 · 참석 확인 메시지를 준비했어요", href: "/admin/approvals" },
-  { kind: "attendance", text: "오늘 10:00 회차 출석 2명이 아직 기록되지 않았어요", href: "/admin/today#attendance" },
+  { kind: "attendance", text: "오늘 10:00 회차 출석 2명이 아직 기록되지 않았어요", href: "/admin/schedule/attendance" },
   { kind: "failed", text: "메시지 전송 실패 1건 · 예약은 완료돼 있어요", href: "/admin/today#todo" },
 ] as const;
