@@ -5,6 +5,8 @@ import Link from "next/link";
 import { CheckCircle, Info, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FilterChip } from "@/components/ui/filter-chip";
+import { weekSessions } from "@/data/schedule";
+import { phaseOf } from "@/data/sessions";
 import { bookingRows, type Attendance, type BookingRow, type BookingStatus } from "@/data/bookings";
 import { cn } from "@/lib/cn";
 
@@ -50,6 +52,7 @@ function DetailPanel({
   onConfirm: () => void;
   onReject: (reason: string | null) => void;
 }) {
+  const session = weekSessions.find((x) => x.id === row.sessionId);
   const [rejecting, setRejecting] = useState(false);
   const [reason, setReason] = useState<string | null>(null);
   const rows: [string, string][] = [
@@ -143,8 +146,13 @@ function DetailPanel({
           <Link href="/admin/members" className="rounded-md bg-secondary px-3 py-1 text-label-sm text-on-secondary hover:bg-secondary-hover">
             회원 상세
           </Link>
-          {row.status === "confirmed" && row.attendance === "unknown" && (
-            <Link href="/admin/schedule/attendance" className="rounded-md bg-secondary px-3 py-1 text-label-sm text-on-secondary hover:bg-secondary-hover">
+          {session && (
+            <Link href={`/admin/schedule/${session.id}`} className="rounded-md bg-secondary px-3 py-1 text-label-sm text-on-secondary hover:bg-secondary-hover">
+              회차 상세
+            </Link>
+          )}
+          {session && phaseOf(session) === "ended" && row.status === "confirmed" && row.attendance === "unknown" && (
+            <Link href={`/admin/schedule/${session.id}/attendance`} className="rounded-md bg-secondary px-3 py-1 text-label-sm text-on-secondary hover:bg-secondary-hover">
               출석부 열기
             </Link>
           )}
@@ -264,7 +272,13 @@ export function BookingsView({ initialTab = "all" }: { initialTab?: Tab }) {
                   <td className="px-4 py-3 text-fg">
                     {r.program}
                     <span className="block text-caption text-fg-muted">
-                      {r.sessionId}
+                      {weekSessions.some((x) => x.id === r.sessionId) ? (
+                        <Link href={`/admin/schedule/${r.sessionId}`} className="text-link hover:underline">
+                          {r.sessionId}
+                        </Link>
+                      ) : (
+                        r.sessionId
+                      )}
                       {r.note && ` · ${r.note}`}
                     </span>
                   </td>

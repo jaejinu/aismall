@@ -17,11 +17,11 @@ export const today = {
 };
 
 export const todaySessions: Session[] = [
-  { time: "10:00", duration: "50분", title: "그룹 필라테스", meta: "박준서 강사 · A룸", capacity: "5/8명", remaining: "잔여 3석" },
-  { time: "11:00", duration: "50분", title: "1:1 레슨", meta: "이수연 회원 · 오태양 강사", capacity: "1/1명", remaining: "확정" },
-  { time: "14:00", duration: "50분", title: "기구 필라테스", meta: "최서연 강사 · B룸", capacity: "4/6명", remaining: "잔여 2석", risk: "노쇼 위험 1명" },
-  { time: "16:00", duration: "50분", title: "기구 필라테스", meta: "최서연 강사 · B룸", capacity: "5/6명", remaining: "잔여 1석" },
-  { time: "19:00", duration: "50분", title: "그룹 필라테스", meta: "박준서 강사 · A룸", capacity: "8/8명", remaining: "마감 · 대기 2" },
+  { time: "10:00", duration: "50분", title: "그룹 필라테스", meta: "박준서 강사 · A룸", capacity: "5/8명", remaining: "잔여 3석", href: "/admin/schedule/S-1014-10" },
+  { time: "11:00", duration: "50분", title: "1:1 레슨", meta: "이수연 회원 · 오태양 강사", capacity: "1/1명", remaining: "확정", href: "/admin/schedule/S-1014-11" },
+  { time: "14:00", duration: "50분", title: "기구 필라테스", meta: "최서연 강사 · B룸", capacity: "4/6명", remaining: "잔여 2석", risk: "노쇼 위험 1명", href: "/admin/schedule/S-1014-14" },
+  { time: "16:00", duration: "50분", title: "기구 필라테스", meta: "최서연 강사 · B룸", capacity: "5/6명", remaining: "잔여 1석", href: "/admin/schedule/S-1014-16" },
+  { time: "19:00", duration: "50분", title: "그룹 필라테스", meta: "박준서 강사 · A룸", capacity: "8/8명", remaining: "마감 · 대기 2", href: "/admin/schedule/S-1014-19" },
 ];
 
 export type Evidence = { source: string; text: string };
@@ -107,6 +107,6 @@ export const approvals: ApprovalRequest[] = [
 export const briefing = [
   { kind: "clock", text: "승인 대기 3건 · 가장 급한 예약 요청은 2시간 후 만료돼요", href: "/admin/approvals" },
   { kind: "risk", text: "14:00 기구 필라테스에 노쇼 위험 1명 · 참석 확인 메시지를 준비했어요", href: "/admin/approvals" },
-  { kind: "attendance", text: "오늘 10:00 회차 출석 2명이 아직 기록되지 않았어요", href: "/admin/schedule/attendance" },
+  { kind: "attendance", text: "오늘 10:00 회차 출석 2명이 아직 기록되지 않았어요", href: "/admin/schedule/S-1014-10/attendance" },
   { kind: "failed", text: "메시지 전송 실패 1건 · 예약은 완료돼 있어요", href: "/admin/today#todo" },
 ] as const;

@@ -66,7 +66,7 @@ export const bookingRows: BookingRow[] = [
   { id: "B-1501", when: "2026.10.15 (목) 10:00", member: "김하늘", program: "그룹 필라테스", sessionId: "S-1015-10", coach: "박준서", seats: "6 / 8", status: "confirmed", attendance: "unknown" },
   { id: "B-1401", when: "2026.10.14 (수) 10:00", member: "정다은", program: "그룹 필라테스", sessionId: "S-1014-10", coach: "박준서", seats: "5 / 8", status: "confirmed", attendance: "unknown" },
   { id: "B-1402", when: "2026.10.14 (수) 10:00", member: "김하늘", program: "그룹 필라테스", sessionId: "S-1014-10", coach: "박준서", seats: "5 / 8", status: "confirmed", attendance: "unknown" },
-  { id: "B-1403", when: "2026.10.14 (수) 11:00", member: "이수연", program: "1:1 레슨", sessionId: "S-1014-11", coach: "오태양", seats: "1 / 1", status: "confirmed", attendance: "unknown" },
+  { id: "B-1403", when: "2026.10.14 (수) 11:00", member: "이수연", program: "1:1 레슨", sessionId: "S-1014-11", coach: "오태양", seats: "1 / 1", status: "confirmed", attendance: "attended" },
   { id: "B-1404", when: "2026.10.14 (수) 14:00", member: "홍서준", program: "기구 필라테스", sessionId: "S-1014-14", note: "노쇼 위험", coach: "최서연", seats: "4 / 6", status: "confirmed", attendance: "unknown" },
   { id: "B-1405", when: "2026.10.14 (수) 19:00", member: "윤서아", program: "그룹 필라테스", sessionId: "S-1014-19", coach: "박준서", seats: "8 / 8", status: "waitlisted", statusDetail: "대기 1번", attendance: "none" },
   { id: "B-1406", when: "2026.10.14 (수) 19:00", member: "김하늘", program: "그룹 필라테스", sessionId: "S-1014-19", coach: "박준서", seats: "8 / 8", status: "waitlisted", statusDetail: "대기 2번 · 자동 확정 동의", attendance: "none" },

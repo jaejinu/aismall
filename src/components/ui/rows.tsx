@@ -12,11 +12,13 @@ export type Session = {
   capacity: string;
   remaining: string;
   risk?: string;
+  href?: string;
 };
 
 export function ScheduleRow({ s }: { s: Session }) {
-  return (
-    <div className="flex items-center gap-4 border-b border-line bg-surface px-4 py-3 last:border-b-0">
+  const cls = "flex items-center gap-4 border-b border-line bg-surface px-4 py-3 last:border-b-0";
+  const content = (
+    <>
       <div className="flex w-14 shrink-0 flex-col gap-0.5">
         <span className="text-label-md text-fg">{s.time}</span>
         <span className="text-caption text-fg-muted">{s.duration}</span>
@@ -35,7 +37,14 @@ export function ScheduleRow({ s }: { s: Session }) {
         <span className="text-label-md text-fg">{s.capacity}</span>
         <span className="text-caption text-fg-secondary">{s.remaining}</span>
       </div>
-    </div>
+    </>
+  );
+  return s.href ? (
+    <Link href={s.href} className={cn(cls, "hover:bg-subtle")}>
+      {content}
+    </Link>
+  ) : (
+    <div className={cls}>{content}</div>
   );
 }
 

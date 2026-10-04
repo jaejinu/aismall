@@ -41,7 +41,10 @@ function SessionBlock({ s }: { s: WeekSession }) {
             : `${s.booked}/${s.capacity} · 대기 ${s.waitlist ?? 0}`
           : `${s.booked}/${s.capacity} · 잔여 ${left}`;
   return (
-    <div className={cn("flex flex-col gap-0.5 rounded-md border p-2", toneCls[tone])}>
+    <Link
+      href={`/admin/schedule/${s.id}`}
+      className={cn("flex flex-col gap-0.5 rounded-md border p-2 hover:border-line-strong focus-visible:outline-2 focus-visible:outline-offset-2", toneCls[tone])}
+    >
       <span className={cn("text-label-sm", tone === "cancelled" ? "text-fg-muted" : "text-fg")}>
         {s.time} {kindShort[s.kind]}
       </span>
@@ -50,7 +53,7 @@ function SessionBlock({ s }: { s: WeekSession }) {
         {tone === "past" && " · 지난 회차"}
       </span>
       <span className={cn("text-caption", tone === "few" ? "text-warning-fg" : "text-fg-secondary")}>{status}</span>
-    </div>
+    </Link>
   );
 }
 

@@ -3,26 +3,17 @@
 import { useState } from "react";
 import Link from "next/link";
 import { AlertTriangle, ArrowLeft, CheckCircle } from "lucide-react";
-import { ActorBadge, type Actor } from "@/components/ui/badges";
+import { ActorBadge } from "@/components/ui/badges";
 import { Button } from "@/components/ui/button";
+import { kindLabel, type LogEvent, type Result, type SessionData } from "@/data/sessions";
 import { cn } from "@/lib/cn";
 
 /*
  * Figma: Desktop / Attendance (23:2726) · Attendance Row (23:120)
  * 이용 결과(미확인·출석·노쇼)는 예약 상태와 따로 기록한다. 회차가 끝났다고 출석이 되지 않는다.
- * 데이터는 기준 데이터: 10/14(수) 10:00 그룹 필라테스 · 확정 5 · 김하늘·정다은 미확인.
+ * 확정된 회원만 기록한다. 데이터는 src/data/sessions.ts(기준 데이터).
  */
-type Result = "unknown" | "attended" | "noshow";
-
 type Attendee = { id: string; name: string; meta: string; result: Result };
-
-const initial: Attendee[] = [
-  { id: "a1", name: "김하늘", meta: "회원 직접 신청 · 최근 3회 중 출석 3", result: "unknown" },
-  { id: "a2", name: "정다은", meta: "회원 직접 신청 · 수신 동의가 없어 참석 확인을 보내지 못함", result: "unknown" },
-  { id: "a3", name: "윤서아", meta: "회원 직접 신청 · 최근 3회 중 출석 3", result: "attended" },
-  { id: "a4", name: "강도윤", meta: "회원 AI 도우미로 예약 · 최근 3회 중 출석 2", result: "attended" },
-  { id: "a5", name: "이수연", meta: "관리자 생성 · 최근 3회 중 노쇼 2", result: "attended" },
-];
 
 const options: { value: Result; label: string; on: string }[] = [
   { value: "unknown", label: "미확인", on: "bg-surface text-fg shadow-sm" },
@@ -30,19 +21,14 @@ const options: { value: Result; label: string; on: string }[] = [
   { value: "noshow", label: "노쇼", on: "bg-danger-bg text-danger-fg" },
 ];
 
-type Event = { actor: Actor; text: string; time: string };
-
-const initialEvents: Event[] = [
-  { actor: "human", text: "홍지수 오너가 이수연 출석으로 표시", time: "10:54" },
-  { actor: "human", text: "홍지수 오너가 윤서아·강도윤 출석으로 표시", time: "10:53" },
-  { actor: "system", text: "회차 종료 · 이용 결과 5명 미확인", time: "10:50" },
-  { actor: "ai", text: "참석 확인 제안에서 정다은 제외 · 수신 동의 없음", time: "어제 10:00" },
-];
-
-export function AttendanceView() {
+export function AttendanceView({ data }: { data: SessionData }) {
+  const { session: s, labels } = data;
+  const initial: Attendee[] = data.roster
+    .filter((r) => r.status === "confirmed")
+    .map((r, i) => ({ id: `a${i}`, name: r.name, meta: [r.via, r.note].filter(Boolean).join(" · "), result: r.result }));
   const [rows, setRows] = useState(initial);
   const [saved, setSaved] = useState(initial);
-  const [events, setEvents] = useState(initialEvents);
+  const [events, setEvents] = useState<LogEvent[]>(data.log);
   const [toast, setToast] = useState<string | null>(null);
 
   const count = (r: Result) => rows.filter((x) => x.result === r).length;
@@ -52,7 +38,7 @@ export function AttendanceView() {
 
   const save = () => {
     const changed = rows.filter((r, i) => r.result !== saved[i].result);
-    setEvents((ev) => [...changed.map((c) => ({ actor: "human" as Actor, text: `홍지수 오너가 ${c.name} ${label(c.result)}${c.result === "noshow" ? "로" : "으로"} 표시`, time: "방금" })), ...ev]);
+    setEvents((ev) => [...changed.map((c) => ({ actor: "human" as const, text: `홍지수 오너가 ${c.name} ${label(c.result)}${c.result === "noshow" ? "로" : "으로"} 표시`, time: "방금" })), ...ev]);
     setSaved(rows);
     setToast(`이용 결과를 저장했어요 · ${changed.length}명 바뀜`);
   };
@@ -60,13 +46,17 @@ export function AttendanceView() {
   return (
     <div className="flex flex-1 flex-col xl:flex-row">
       <main className="flex min-w-0 flex-1 flex-col gap-6 p-6 lg:p-8">
-        <Link href="/admin/schedule" className="inline-flex items-center gap-1 self-start text-label-sm text-link">
+        <Link href={`/admin/schedule/${s.id}`} className="inline-flex items-center gap-1 self-start text-label-sm text-link">
           <ArrowLeft size={16} aria-hidden />
-          주간 일정으로
+          회차 상세로
         </Link>
         <header className="flex flex-col gap-0.5">
-          <h1 className="text-h1 text-fg">출석부 · 10/14(수) 10:00 그룹 필라테스</h1>
-          <p className="text-body-md text-fg-secondary">박준서 강사 · A룸 · 정원 8 · 확정 5 · 회차 종료 10:50</p>
+          <h1 className="text-h1 text-fg">
+            출석부 · {labels.date} {s.time} {kindLabel[s.kind]}
+          </h1>
+          <p className="text-body-md text-fg-secondary">
+            {s.coach} 강사 · {s.room} · 정원 {s.capacity} · 확정 {initial.length} · 회차 종료 {labels.end}
+          </p>
         </header>
 
         {count("unknown") > 0 && (
