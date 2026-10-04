@@ -38,7 +38,7 @@ export function MemberShell({ children }: { children: React.ReactNode }) {
         className="fixed inset-x-0 bottom-0 z-20 mx-auto flex w-full max-w-[430px] border-t border-line bg-surface px-2 pb-5"
       >
         {tabs.map((t) => {
-          const active = pathname.startsWith(t.href);
+          const active = pathname.startsWith(t.href) || (t.href === "/member/bookings" && pathname.startsWith("/member/notices"));
           const Icon = t.icon;
           return (
             <Link

@@ -65,7 +65,7 @@ export default function MemberHomePage() {
               <div className="flex min-w-0 flex-1 flex-col gap-0.5">
                 <span className="text-label-md text-fg">{programLabel[s.kind]}</span>
                 <span className="text-caption text-fg-secondary">
-                  {day(s)} {s.time} · 대기 신청은 예약이 아니에요
+                  {day(s)} {s.time} · 자리 나면 자동 확정 동의함
                 </span>
               </div>
               <span className="inline-flex shrink-0 items-center gap-1 text-label-sm text-info-fg">

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Clock, Info } from "lucide-react";
+import { Info } from "lucide-react";
 import { MemberHeader } from "@/components/member/member-shell";
+import { WaitingCard } from "@/components/member/waiting-card";
 import { StatusChip } from "@/components/ui/badges";
 import { deadlinePassed as isDeadlinePassed, memberSessions, pastVisits, programLabel, week } from "@/data/member";
 import { cn } from "@/lib/cn";
@@ -60,23 +61,12 @@ export default function MemberBookingsPage() {
               대기 중 {waiting.length}
             </h2>
             {waiting.map((s) => (
-              <article key={s.id} className="flex flex-col gap-2 rounded-lg border border-line bg-surface px-4 py-3">
-                <div className="flex items-center gap-2">
-                  <span className="flex-1 text-label-md text-fg">
-                    {dayLabel(s.day)} {s.time} {programLabel[s.kind]}
-                  </span>
-                  <span className="inline-flex items-center gap-1 text-label-sm text-info-fg">
-                    <Clock size={12} aria-hidden />
-                    대기 {s.myWaitNo}번
-                  </span>
-                </div>
-                <p className="text-caption text-fg-secondary">
-                  대기 신청은 예약이 아니에요. 자리가 나면 알림을 보내 드리고, 먼저 신청한 분이 확정돼요.
-                </p>
-                <button type="button" className="self-start cursor-pointer rounded-md bg-secondary px-3 py-1 text-label-sm text-on-secondary hover:bg-secondary-hover">
-                  대기 취소
-                </button>
-              </article>
+              <WaitingCard
+                key={s.id}
+                title={`${dayLabel(s.day)} ${s.time} ${programLabel[s.kind]}`}
+                sub={`오늘 · 50분 · ${s.coach} · 정원 ${s.capacity} 마감`}
+                waitNo={s.myWaitNo ?? 0}
+              />
             ))}
           </section>
         )}
