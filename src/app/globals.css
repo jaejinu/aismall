@@ -1,26 +1,290 @@
 @import "tailwindcss";
 
+/*
+ * 디자인 토큰 — Figma "AI Small Business OS" Color/Spacing/Radius 컬렉션에서 그대로 옮김.
+ * 라이트가 기본, 시스템 다크 모드 또는 data-theme="dark"면 다크 값으로 바뀐다.
+ * 간격·반경은 Tailwind 기본 스케일과 같아서 따로 정의하지 않는다(2·4·8·12·16…, sm 4·md 6·lg 8·xl 12·2xl 16).
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --c-bg-canvas: #fafafa;
+  --c-bg-surface: #ffffff;
+  --c-bg-subtle: #f4f4f5;
+  --c-bg-muted: #e4e4e7;
+  --c-text-primary: #18181b;
+  --c-text-secondary: #52525b;
+  --c-text-muted: #64646d;
+  --c-text-inverse: #ffffff;
+  --c-text-link: #1d4ed8;
+  --c-border-default: #e4e4e7;
+  --c-border-strong: #d4d4d8;
+  --c-action-primary-bg: #18181b;
+  --c-action-primary-bg-hover: #27272a;
+  --c-action-primary-text: #ffffff;
+  --c-action-secondary-bg: #f4f4f5;
+  --c-action-secondary-bg-hover: #e4e4e7;
+  --c-action-secondary-text: #18181b;
+  --c-action-danger-bg: #dc2626;
+  --c-action-danger-text: #ffffff;
+  --c-focus-ring: #3b82f6;
+  --c-success-bg: #f0fdf4;
+  --c-success-fg: #15803d;
+  --c-warning-bg: #fffbeb;
+  --c-warning-fg: #b45309;
+  --c-danger-bg: #fef2f2;
+  --c-danger-fg: #b91c1c;
+  --c-info-bg: #eff6ff;
+  --c-info-fg: #1d4ed8;
+  --c-neutral-bg: #f4f4f5;
+  --c-neutral-fg: #3f3f46;
+  --c-actor-human-bg: #eff6ff;
+  --c-actor-human-fg: #1d4ed8;
+  --c-actor-ai-bg: #f5f3ff;
+  --c-actor-ai-fg: #6d28d9;
+  --c-actor-automation-bg: #f0fdfa;
+  --c-actor-automation-fg: #0f766e;
+  --c-actor-system-bg: #f4f4f5;
+  --c-actor-system-fg: #3f3f46;
+  --c-actor-external-bg: #f0f9ff;
+  --c-actor-external-fg: #0369a1;
+  --c-ai-border: #c4b5fd;
+  --c-risk-low-bg: #f0fdf4;
+  --c-risk-low-fg: #15803d;
+  --c-risk-medium-bg: #fffbeb;
+  --c-risk-medium-fg: #b45309;
+  --c-risk-high-bg: #fff7ed;
+  --c-risk-high-fg: #c2410c;
+  --c-risk-critical-bg: #fef2f2;
+  --c-risk-critical-fg: #b91c1c;
+  --c-scrim: #18181b;
+  color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme="light"]) {
+    --c-bg-canvas: #09090b;
+    --c-bg-surface: #18181b;
+    --c-bg-subtle: #27272a;
+    --c-bg-muted: #3f3f46;
+    --c-text-primary: #fafafa;
+    --c-text-secondary: #d4d4d8;
+    --c-text-muted: #a1a1aa;
+    --c-text-inverse: #09090b;
+    --c-text-link: #60a5fa;
+    --c-border-default: #27272a;
+    --c-border-strong: #3f3f46;
+    --c-action-primary-bg: #fafafa;
+    --c-action-primary-bg-hover: #e4e4e7;
+    --c-action-primary-text: #18181b;
+    --c-action-secondary-bg: #27272a;
+    --c-action-secondary-bg-hover: #3f3f46;
+    --c-action-secondary-text: #fafafa;
+    --c-success-bg: #052e16;
+    --c-success-fg: #4ade80;
+    --c-warning-bg: #451a03;
+    --c-warning-fg: #fbbf24;
+    --c-danger-bg: #450a0a;
+    --c-danger-fg: #f87171;
+    --c-info-bg: #172554;
+    --c-info-fg: #60a5fa;
+    --c-neutral-bg: #27272a;
+    --c-neutral-fg: #d4d4d8;
+    --c-actor-human-bg: #172554;
+    --c-actor-human-fg: #60a5fa;
+    --c-actor-ai-bg: #2e1065;
+    --c-actor-ai-fg: #c4b5fd;
+    --c-actor-automation-bg: #042f2e;
+    --c-actor-automation-fg: #2dd4bf;
+    --c-actor-system-bg: #27272a;
+    --c-actor-system-fg: #d4d4d8;
+    --c-actor-external-bg: #082f49;
+    --c-actor-external-fg: #38bdf8;
+    --c-ai-border: #5b21b6;
+    --c-risk-low-bg: #052e16;
+    --c-risk-low-fg: #4ade80;
+    --c-risk-medium-bg: #451a03;
+    --c-risk-medium-fg: #fbbf24;
+    --c-risk-high-bg: #431407;
+    --c-risk-high-fg: #fb923c;
+    --c-risk-critical-bg: #450a0a;
+    --c-risk-critical-fg: #f87171;
+    --c-scrim: #000000;
+    color-scheme: dark;
   }
 }
 
+:root[data-theme="dark"] {
+  --c-bg-canvas: #09090b;
+  --c-bg-surface: #18181b;
+  --c-bg-subtle: #27272a;
+  --c-bg-muted: #3f3f46;
+  --c-text-primary: #fafafa;
+  --c-text-secondary: #d4d4d8;
+  --c-text-muted: #a1a1aa;
+  --c-text-inverse: #09090b;
+  --c-text-link: #60a5fa;
+  --c-border-default: #27272a;
+  --c-border-strong: #3f3f46;
+  --c-action-primary-bg: #fafafa;
+  --c-action-primary-bg-hover: #e4e4e7;
+  --c-action-primary-text: #18181b;
+  --c-action-secondary-bg: #27272a;
+  --c-action-secondary-bg-hover: #3f3f46;
+  --c-action-secondary-text: #fafafa;
+  --c-success-bg: #052e16;
+  --c-success-fg: #4ade80;
+  --c-warning-bg: #451a03;
+  --c-warning-fg: #fbbf24;
+  --c-danger-bg: #450a0a;
+  --c-danger-fg: #f87171;
+  --c-info-bg: #172554;
+  --c-info-fg: #60a5fa;
+  --c-neutral-bg: #27272a;
+  --c-neutral-fg: #d4d4d8;
+  --c-actor-human-bg: #172554;
+  --c-actor-human-fg: #60a5fa;
+  --c-actor-ai-bg: #2e1065;
+  --c-actor-ai-fg: #c4b5fd;
+  --c-actor-automation-bg: #042f2e;
+  --c-actor-automation-fg: #2dd4bf;
+  --c-actor-system-bg: #27272a;
+  --c-actor-system-fg: #d4d4d8;
+  --c-actor-external-bg: #082f49;
+  --c-actor-external-fg: #38bdf8;
+  --c-ai-border: #5b21b6;
+  --c-risk-low-bg: #052e16;
+  --c-risk-low-fg: #4ade80;
+  --c-risk-medium-bg: #451a03;
+  --c-risk-medium-fg: #fbbf24;
+  --c-risk-high-bg: #431407;
+  --c-risk-high-fg: #fb923c;
+  --c-risk-critical-bg: #450a0a;
+  --c-risk-critical-fg: #f87171;
+  --c-scrim: #000000;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-sans: var(--font-noto-sans-kr), system-ui, -apple-system, "Apple SD Gothic Neo", sans-serif;
+
+  --color-canvas: var(--c-bg-canvas);
+  --color-surface: var(--c-bg-surface);
+  --color-subtle: var(--c-bg-subtle);
+  --color-muted: var(--c-bg-muted);
+  --color-fg: var(--c-text-primary);
+  --color-fg-secondary: var(--c-text-secondary);
+  --color-fg-muted: var(--c-text-muted);
+  --color-fg-inverse: var(--c-text-inverse);
+  --color-link: var(--c-text-link);
+  --color-line: var(--c-border-default);
+  --color-line-strong: var(--c-border-strong);
+  --color-primary: var(--c-action-primary-bg);
+  --color-primary-hover: var(--c-action-primary-bg-hover);
+  --color-on-primary: var(--c-action-primary-text);
+  --color-secondary: var(--c-action-secondary-bg);
+  --color-secondary-hover: var(--c-action-secondary-bg-hover);
+  --color-on-secondary: var(--c-action-secondary-text);
+  --color-danger: var(--c-action-danger-bg);
+  --color-on-danger: var(--c-action-danger-text);
+  --color-ring: var(--c-focus-ring);
+  --color-success-bg: var(--c-success-bg);
+  --color-success-fg: var(--c-success-fg);
+  --color-warning-bg: var(--c-warning-bg);
+  --color-warning-fg: var(--c-warning-fg);
+  --color-danger-bg: var(--c-danger-bg);
+  --color-danger-fg: var(--c-danger-fg);
+  --color-info-bg: var(--c-info-bg);
+  --color-info-fg: var(--c-info-fg);
+  --color-neutral-bg: var(--c-neutral-bg);
+  --color-neutral-fg: var(--c-neutral-fg);
+  --color-human-bg: var(--c-actor-human-bg);
+  --color-human-fg: var(--c-actor-human-fg);
+  --color-ai-bg: var(--c-actor-ai-bg);
+  --color-ai-fg: var(--c-actor-ai-fg);
+  --color-ai-border: var(--c-ai-border);
+  --color-automation-bg: var(--c-actor-automation-bg);
+  --color-automation-fg: var(--c-actor-automation-fg);
+  --color-system-bg: var(--c-actor-system-bg);
+  --color-system-fg: var(--c-actor-system-fg);
+  --color-external-bg: var(--c-actor-external-bg);
+  --color-external-fg: var(--c-actor-external-fg);
+  --color-risk-low-bg: var(--c-risk-low-bg);
+  --color-risk-low-fg: var(--c-risk-low-fg);
+  --color-risk-medium-bg: var(--c-risk-medium-bg);
+  --color-risk-medium-fg: var(--c-risk-medium-fg);
+  --color-risk-high-bg: var(--c-risk-high-bg);
+  --color-risk-high-fg: var(--c-risk-high-fg);
+  --color-risk-critical-bg: var(--c-risk-critical-bg);
+  --color-risk-critical-fg: var(--c-risk-critical-fg);
+  --color-scrim: var(--c-scrim);
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+/* 텍스트 스타일 — Figma Text Styles와 1:1 */
+@utility text-display {
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+@utility text-h1 {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+@utility text-h2 {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+}
+@utility text-h3 {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 700;
+}
+@utility text-body-lg {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+}
+@utility text-body-md {
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 400;
+}
+@utility text-body-sm {
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 400;
+}
+@utility text-label-md {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+}
+@utility text-label-sm {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+}
+@utility text-caption {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-canvas);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  word-break: keep-all;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
 }
