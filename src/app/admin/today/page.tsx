@@ -67,7 +67,7 @@ export default function TodayPage() {
           </h2>
           <ResultBlock
             title="예약은 완료, 메시지는 보내지 못했어요"
-            done={["예약 생성 · 강도윤님 10/17(토) 09:00 기구 필라테스"]}
+            done={["예약 생성 · 한서윤님 10/16(금) 19:00 그룹 필라테스"]}
             failed={["메시지 전송 실패 · 알림톡 일시 오류"]}
             actions={
               <>

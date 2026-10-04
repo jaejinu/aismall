@@ -10,6 +10,7 @@ const screens = [
   { href: "/admin/schedule/S-1014-10/attendance", title: "출석부", desc: "관리자 데스크톱 · 이용 결과 기록(미확인·출석·노쇼), 미확인 모두 출석, 기록 이력" },
   { href: "/admin/ai", title: "AI 관리", desc: "관리자 데스크톱 · 업무 유형별 AI 결과, 지켜보기 모드 4분류, 자동 실행 추천(미리보기로만)" },
   { href: "/admin/settings/ai", title: "AI 권한", desc: "관리자 데스크톱 · 업무 유형별 수준, 지점은 좁히기만, 끌 수 없는 규칙, 변경 미리보기·본인 확인 (?as=admin 최고관리자)" },
+  { href: "/admin/activity", title: "활동 기록", desc: "관리자 데스크톱 · 누가 무엇을 언제 왜, 사건별 다시 보기(정책 결정·다음 행동)" },
   { href: "/member/home", title: "홈 (회원)", desc: "회원 모바일 · 다가오는 예약, 확인 중인 문의, 자리 있는 회차" },
   { href: "/member/schedule", title: "수업 (회원)", desc: "회원 모바일 · 주간 회차, 신청 시트, 대기 신청" },
   { href: "/member/bookings", title: "내 예약 (회원)", desc: "회원 모바일 · 다가오는 예약, 대기 중, 지난 이용" },
