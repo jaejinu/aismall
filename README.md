@@ -1,8 +1,52 @@
-# AI Small Business OS — 퍼블리싱
+# AI Small Business OS
 
-Figma 디자인(`JVxCGWm8ui8dTj72PcdX9G`)을 코드로 옮긴 화면이에요. 기획 문서는 manyfast 「AI Small Business OS」 프로젝트에 있어요.
+예약 중심 소규모 사업자(1~5인 필라테스·요가 스튜디오)를 위한 운영 플랫폼의 UX 기획·디자인·퍼블리싱 프로젝트예요.
+문의·예약·회차·고객을 한곳에서 다루고, 반복 업무는 **AI가 제안하고 사람이 승인해서 실행**해요.
+핵심은 자동화 자체가 아니라 "AI가 무엇을 하려는지 이해하고 통제할 수 있는 경험"이에요.
 
-프로젝트 전체 진행 현황·결정·다음 할 일은 [`docs/PROJECT_STATUS.md`](docs/PROJECT_STATUS.md)에 있어요.
+**데모** · https://aismall.vercel.app (첫 화면이 전체 화면 목록이에요)
+
+> 1차 범위는 리서치 → UX/UI → 디자인 시스템 → 프로토타입 → 퍼블리싱이에요. 실제 AI·서버 연결은 2차 범위라, 화면 데이터는 모두 샘플이고 새로고침하면 처음 상태로 돌아가요.
+> 샘플 기준: 2026-10-14(수) 13:00, 재진필라테스 강남점, 사업장 오너 홍지수. 등장하는 사람과 연락처는 모두 지어낸 것이에요.
+
+## 먼저 볼 화면
+
+| 화면 | 주소 | 볼 것 |
+| --- | --- | --- |
+| 관리자 오늘 | [`/admin/today`](https://aismall.vercel.app/admin/today) | 브리핑, 오늘 회차, 확인이 필요한 일(예약은 완료·메시지는 실패) |
+| 승인함 | [`/admin/approvals`](https://aismall.vercel.app/admin/approvals) | AI 제안 승인 카드 — 실행할 행동, 회원에게 갈 메시지, 근거 펼치기, 수정·거절 |
+| 모바일 승인 | [`/mobile/push`](https://aismall.vercel.app/mobile/push) | 잠금 화면 알림 → 카드 → 실행 직전 다시 확인 → 일부 실패 → 다시 보내기 |
+| AI 권한 | [`/admin/settings/ai`](https://aismall.vercel.app/admin/settings/ai?as=admin&preview=reminder) | 업무 유형별 수준, 끌 수 없는 규칙, 바꾸기 전 영향 미리보기, 본인 확인 |
+| 활동 기록 | [`/admin/activity`](https://aismall.vercel.app/admin/activity) | 누가·무엇을·왜 — 사건 단위로 다시 보기(정책 결정·다음 행동) |
+| 회원 앱 | [`/member/home`](https://aismall.vercel.app/member/home) | 회원이 직접 예약·대기 신청, 참석 확인, 휴강 안내 |
+
+관리자 데스크톱(오늘·문의함·승인함·일정·회차·출석부·휴강·예약·프로그램·회원·AI 관리·활동 기록·설정), 관리자 모바일 승인, 회원 모바일 화면이 있어요.
+
+## 설계에서 지킨 원칙
+
+- **AI는 제안, 사람은 승인** — 자동 실행은 위험 낮음만. 위험 중간은 같은 유형을 묶어 한 번에 승인. AI의 예약 생성·변경·취소는 항상 승인 후 실행.
+- **끌 수 없는 규칙** — 수신 동의 없는 회원에게 메시지 금지, 노쇼 위험을 이유로 예약 제한 금지 등은 권한 설정으로도 바꿀 수 없어요.
+- **실패를 숨기지 않기** — 결과는 "된 것 · 안 된 것 · 다음 행동"으로 보여 줘요(예: 예약은 확정, 메시지만 실패).
+- **권한은 좁히기만** — 브랜드 기본값(최고관리자) 아래에서 지점(사업장 오너)은 더 좁히기만 해요.
+- **시간이 지나도 출석이 아니에요** — 이용 결과(미확인·출석·노쇼)는 예약 상태와 따로 기록해요.
+- **한국어 표시명** — 화면에는 오늘·문의함·승인함·지켜보기 모드처럼 한국어만 써요.
+
+결정 근거는 [`docs/reference/decisions-D01-D15.md`](docs/reference/decisions-D01-D15.md), 진행 기록은 [`docs/PROJECT_STATUS.md`](docs/PROJECT_STATUS.md)에 있어요.
+
+## 과정
+
+1. **기획** — PRD·요구사항·기능·스펙·정책을 정리하고, 외부 검토 의견(D-01~D-15)을 반영했어요. 유저플로우와 와이어프레임까지.
+2. **디자인 시스템** — Figma 변수(색 라이트·다크, 간격, 반경), 텍스트 스타일 10개, 컴포넌트 57개.
+3. **사용성 테스트 준비(Test A)** — 승인 카드 A/B/C안 비교 계획, 진행 대본, 기록 양식.
+4. **퍼블리싱** — Figma 변수를 CSS 토큰으로 1:1 옮기고, 화면끼리 데이터가 맞도록 기준 데이터([`docs/reference/canonical-data.md`](docs/reference/canonical-data.md)) 하나를 함께 써요.
+
+## 기술
+
+- Next.js 16 (App Router) · React 19 · TypeScript
+- Tailwind CSS v4 — `src/app/globals.css`에 Figma 변수와 1:1인 디자인 토큰, 다크 모드
+- lucide-react 아이콘 · tailwind-merge
+- Vercel 배포
+- 도구: Figma, manyfast(기획 문서), Claude Code(AI 페어 프로그래밍)
 
 ## 실행
 
@@ -15,20 +59,9 @@ npm run dev   # http://localhost:3000
 
 | 위치 | 내용 |
 | --- | --- |
-| `src/app/globals.css` | 디자인 토큰(색 라이트·다크, 글자 스타일). Figma 변수와 1:1 |
-| `src/components/ui/` | 공통 컴포넌트(배지·버튼·회차 줄·브리핑 줄·결과 블록 등) |
-| `src/components/approval-card.tsx` | 승인 카드 C안(근거 펼치기형). 최종안은 Test A 결과로 정해요 |
-| `src/components/admin-shell.tsx` | 관리자 데스크톱 틀(사이드바·상단바) |
-| `src/components/member/` | 회원 모바일 틀(하단 탭)·회차 카드·신청 시트 |
-| `src/data/` | 샘플 데이터. 기준일 2026-10-14(수), 재진필라테스 강남점 |
-
-## 만든 화면
-
-- `/admin/today` 관리자 오늘
-- `/admin/inbox` 문의함
-- `/admin/approvals` 승인함 (`?id=apr-1`처럼 요청을 골라 열 수 있음)
-- `/admin/schedule` 주간 일정
-- `/member/schedule` 회원 수업(신청·대기 신청 시트)
-- `/member/bookings` 회원 내 예약
-
-나머지 메뉴는 '준비 중' 화면으로 연결돼요. 다크 모드는 시스템 설정을 따르고, `<html data-theme="dark|light">`로 고정할 수 있어요.
+| `src/app/admin/` | 관리자 데스크톱 화면 |
+| `src/app/mobile/` | 관리자 모바일 승인 화면 |
+| `src/app/member/` | 회원 모바일 화면 |
+| `src/components/ui/` | 공통 컴포넌트(배지·버튼·필터 칩·토글·회차 줄 등) |
+| `src/data/` | 샘플 데이터 — 모든 화면이 같은 기준 데이터를 써요 |
+| `docs/` | 진행 현황, 결정 기록, Figma 규칙, 기준 데이터 |
