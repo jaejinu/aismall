@@ -5,8 +5,11 @@ const screens = [
   { href: "/admin/inbox", title: "문의함", desc: "관리자 데스크톱 · 대화 목록, AI 초안, 고객 요약" },
   { href: "/admin/approvals", title: "승인함", desc: "관리자 데스크톱 · AI 제안 대기열, 승인 카드, 처리된 요청" },
   { href: "/admin/schedule", title: "일정", desc: "관리자 데스크톱 · 주간 회차 표, AI 편성 제안" },
+  { href: "/member/home", title: "홈 (회원)", desc: "회원 모바일 · 다가오는 예약, 확인 중인 문의, 자리 있는 회차" },
   { href: "/member/schedule", title: "수업 (회원)", desc: "회원 모바일 · 주간 회차, 신청 시트, 대기 신청" },
   { href: "/member/bookings", title: "내 예약 (회원)", desc: "회원 모바일 · 다가오는 예약, 대기 중, 지난 이용" },
+  { href: "/member/assistant", title: "AI 도우미 (회원)", desc: "회원 모바일 · 대화, 예약 초안, 담당자 연결 (시나리오 데모)" },
+  { href: "/member/me", title: "내 정보 (회원)", desc: "회원 모바일 · 연락처, 수신 동의, 탈퇴 안내" },
 ];
 
 export default function Home() {

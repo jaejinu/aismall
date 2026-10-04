@@ -1,7 +1,7 @@
 # AI Small Business OS — 진행 현황
 
 > 새 세션은 이 문서부터 읽어요. 작업이 끝날 때마다 **3. 진행 현황**, **4. 다음 할 일**, **8. 작업 로그**를 갱신해요.
-> 마지막 갱신: 2026-10-05 · 퍼블리싱 6개 화면까지
+> 마지막 갱신: 2026-10-05 · 퍼블리싱 9개 화면까지(회원 홈·AI 도우미·내 정보 추가)
 
 ## 1. 개요
 
@@ -86,14 +86,17 @@
 | `/admin/schedule` | 주간 일정 표 · AI 편성 제안 | 23:2310 |
 | `/member/schedule` | 회원 수업 · 신청 시트 · 대기 신청 | 21:3, 22:234 |
 | `/member/bookings` | 회원 내 예약 | 21:220, 129:811 |
+| `/member/home` | 회원 홈 · 다가오는 예약 · 확인 중인 문의 · 자리 있는 회차 | Figma 없음 · manyfast 와이어프레임 n23 기준 |
+| `/member/assistant` | 회원 AI 도우미 · 예약 초안 확인 · 담당자 연결 (정해진 시나리오 데모, 실제 AI는 2차) | 21:365 |
+| `/member/me` | 내 정보 · 연락처 · 수신 동의(예약 안내/광고성 분리) · 탈퇴 안내 | 156:1185 |
 
 - 나머지 메뉴(`/admin/[section]`, `/member/[section]`)는 '준비 중' 화면이에요.
 - 타입 검사·린트·`npm run build` 모두 통과했어요.
-- git: 작업 브랜치 `feat/publishing`에 커밋(ae10f1e). `main`은 Next.js 초기 커밋만 있어요. 커밋·푸시는 사용자가 요청할 때만 해요.
+- git: 퍼블리싱 1차는 `main`에 합쳤어요(f0ad86d). 회원 홈·AI 도우미·내 정보는 `feat/member-screens` 브랜치에서 작업 중이고 아직 커밋 전이에요. 커밋·푸시·합치기는 사용자가 요청할 때만 해요.
 
 ## 4. 다음 할 일 (우선순위 순)
 
-1. **퍼블리싱 계속**: 회원 홈 → 회원 AI 도우미 → 내 정보 → 회원 알림·휴강 안내·대기 결과 → 관리자 예약 목록(승인 대기 탭) → 회차 상세·출석부 → AI 관리·AI 권한 → 활동 기록.
+1. **퍼블리싱 계속**: 회원 알림 → 휴강 안내·참석 확인·빈자리 안내·대기 결과 → 관리자 예약 목록(승인 대기 탭) → 회차 상세·출석부 → AI 관리·AI 권한 → 활동 기록. (회원 홈은 Figma 화면이 없으니 필요하면 Figma에도 추가)
 2. **Figma 옛 데이터 정리**(코드는 이미 기준 데이터를 써요):
    - 회원 수업 21:3·신청 시트 22:234가 '10월 넷째 주 19~25', '매트·기구' 구분으로 남아 있어요. 10/12~18 주, 그룹·기구·듀엣·1:1로 바꿔야 해요.
    - 문의함 23:3142·157:605에서 윤서아님이 '비회원'으로 나오고, 'LEAD/UNKNOWN'이 남아 있어요. 김하늘님 2자리 문의, 한유진님(비회원), 한국어 상태명으로 바꿔야 해요.
@@ -114,12 +117,12 @@
 - **실행**: `npm run dev` · 확인은 `npx tsc --noEmit && npm run lint && npm run build`
 - **토큰**: `src/app/globals.css`에 Figma 변수를 1:1로 옮겼어요. 색은 `bg-surface`, `text-fg-secondary`, `bg-risk-medium-bg`처럼 써요. 글자는 `text-h1`·`text-body-md`·`text-label-sm` 같은 유틸리티를 써요. 간격·반경은 Tailwind 기본 스케일과 같아요.
   - 다크 모드는 시스템을 따르고, `<html data-theme>`로 고정할 수 있어요.
-- **컴포넌트**: `src/components/ui/`(배지·버튼·필터 칩·회차 줄·브리핑 줄·결과 블록·승인 대기 줄)를 먼저 재사용해요. 클래스 합치기는 `cn()`(tailwind-merge, 텍스트 스타일 그룹 등록됨)으로 해요.
+- **컴포넌트**: `src/components/ui/`(배지·버튼·필터 칩·토글·회차 줄·브리핑 줄·결과 블록·승인 대기 줄)를 먼저 재사용해요. 클래스 합치기는 `cn()`(tailwind-merge, 텍스트 스타일 그룹 등록됨)으로 해요.
 - **아이콘**: lucide-react를 써요(Figma 아이콘이 Lucide 스타일). 16px, 배지 안은 12px, 회원 하단 탭은 24px이에요.
 - **데이터**: `src/data/`의 샘플을 써요. 기준일은 2026-10-14(수) 13:00, 재진필라테스 강남점, 사업장 오너 홍지수, 회원 김하늘이에요. 기준은 `docs/reference/canonical-data.md`이고, Figma가 옛 데이터면 코드는 기준 데이터를 따라요.
 - **문구**: 짧은 해요체로 쓰고, 버튼에는 실제 행동을 써요("예약 만들고 메시지 보내기"). Primary 버튼은 한 화면에 하나예요.
 - **Next.js 16**: 새 API를 쓰기 전에 `node_modules/next/dist/docs/`를 확인해요. `params`·`searchParams`는 Promise예요.
-- **화면 확인**: Chrome 창 크기를 바꿀 수 없을 때는 헤드리스 스크린샷을 써요.
+- **화면 확인**: Chrome 창 크기를 바꿀 수 없을 때는 헤드리스 스크린샷을 써요. 헤드리스 창은 최소 폭이 약 500px이라, 모바일은 `--window-size=500,900`으로 찍고 가운데 430px을 봐요.
   ```bash
   "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --hide-scrollbars \
     --blink-settings=preferredColorScheme=1 --window-size=1440,1000 --screenshot=out.png http://localhost:3000/admin/today
@@ -143,6 +146,7 @@
 
 | 날짜 | 한 일 |
 | --- | --- |
+| 10/5 | 퍼블리싱: 회원 홈·AI 도우미(시나리오 데모)·내 정보, 토글 컴포넌트. `main`에 1차 합침, `feat/member-screens` 시작 |
 | 10/5 | git: `feat/publishing` 브랜치에 퍼블리싱 1차·진행 현황 문서 커밋 |
 | 10/5 | 퍼블리싱: 문의함·승인함·주간 일정 추가. 필터 칩 컴포넌트, 배지 폭 수정 |
 | 10/5 | 퍼블리싱 시작: Next.js 16 + Tailwind v4 구성, 토큰·공통 컴포넌트, 관리자 오늘, 회원 수업·내 예약 |
