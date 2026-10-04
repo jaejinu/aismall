@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CheckCircle, Info, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FilterChip } from "@/components/ui/filter-chip";
+import { people } from "@/data/members";
 import { weekSessions } from "@/data/schedule";
 import { phaseOf } from "@/data/sessions";
 import { bookingRows, type Attendance, type BookingRow, type BookingStatus } from "@/data/bookings";
@@ -53,6 +54,7 @@ function DetailPanel({
   onReject: (reason: string | null) => void;
 }) {
   const session = weekSessions.find((x) => x.id === row.sessionId);
+  const person = people.find((x) => x.name === row.member);
   const [rejecting, setRejecting] = useState(false);
   const [reason, setReason] = useState<string | null>(null);
   const rows: [string, string][] = [
@@ -143,7 +145,10 @@ function DetailPanel({
 
       {row.status !== "pending" && (
         <div className="flex flex-wrap gap-2">
-          <Link href="/admin/members" className="rounded-md bg-secondary px-3 py-1 text-label-sm text-on-secondary hover:bg-secondary-hover">
+          <Link
+            href={person ? `/admin/members/${person.id}` : "/admin/members"}
+            className="rounded-md bg-secondary px-3 py-1 text-label-sm text-on-secondary hover:bg-secondary-hover"
+          >
             회원 상세
           </Link>
           {session && (
