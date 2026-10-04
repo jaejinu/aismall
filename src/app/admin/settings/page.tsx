@@ -14,24 +14,24 @@ const groups: { title: string; items: Item[] }[] = [
   {
     title: "사업장 운영",
     items: [
-      { title: "사업장 운영정보", desc: "영업시간, 예약·취소 마감, 프로그램 기본 설정" },
+      { title: "사업장 운영정보", desc: "기본 정보, 영업시간·휴무, 새 프로그램 예약 기본값, 용어", href: "/admin/settings/business" },
       { title: "회원 앱·문의 페이지", desc: "회원 예약 링크와 QR, 문의 폼 항목, 회원 AI 도우미", href: "/admin/settings/member-app" },
-      { title: "모듈 관리", desc: "Team · Automation · Analytics 켜기·끄기 · 지금 Automation·Analytics는 꺼져 있어요" },
-      { title: "연결된 앱", desc: "Google Calendar 등 외부 앱 연결과 권한 범위 확인" },
+      { title: "모듈 관리", desc: "Team · Automation · Analytics 켜기·끄기 · 지금 Automation·Analytics는 꺼져 있어요", href: "/admin/settings/modules" },
+      { title: "연결된 앱", desc: "Google Calendar 등 외부 앱 연결과 권한 범위 확인 · 동기화 충돌 1건", href: "/admin/settings/integrations" },
     ],
   },
   {
     title: "AI",
     items: [
       { title: "AI 권한", desc: "업무 유형별 수준(제안만 · 승인 후 실행 · 자동 실행) · 강남점은 브랜드 기본값보다 좁히기만", href: "/admin/settings/ai" },
-      { title: "응대 지침", desc: "AI 답변의 말투와 지켜야 할 규칙" },
-      { title: "참고 자료", desc: "자주 묻는 질문, 방문 안내 등 AI 답변의 근거 자료" },
-      { title: "고급 AI 설정", desc: "지켜보기 모드, 변경 미리보기, 정책 검사 세부 조정" },
+      { title: "응대 지침", desc: "AI 답변의 말투와 지켜야 할 규칙 · 지침 개선 제안 2건", href: "/admin/settings/playbook" },
+      { title: "참고 자료", desc: "자주 묻는 질문, 방문 안내 등 AI 답변의 근거 자료 · 주차 안내가 없어요", href: "/admin/settings/knowledge" },
+      { title: "고급 AI 설정", desc: "지시 조작 막기, 승인 만료 시간, 지켜보기 모드 비교 기간", href: "/admin/settings/ai-advanced" },
     ],
   },
   {
     title: "데이터와 보안",
-    items: [{ title: "원본 기록 조회", desc: "활동 기록 원본을 기간·주체·대상으로 조회하고 내보내기 · 최고관리자 재인증 필요", badge: "최고관리자" }],
+    items: [{ title: "원본 기록 조회", desc: "활동 기록 원본을 기간·주체·대상으로 조회하고 내보내기 · 최고관리자 재인증 필요", badge: "최고관리자", href: "/admin/settings/audit" }],
   },
 ];
 

@@ -83,7 +83,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         <div className="mb-1 flex flex-col gap-0.5 rounded-lg bg-subtle p-3 text-caption">
           <span className="text-label-sm text-fg">필요할 때 켜서 쓰세요</span>
           <span className="text-fg-secondary">Automation · Analytics는 꺼져 있어요</span>
-          <Link href="/admin/settings" className="text-label-sm text-link">
+          <Link href="/admin/settings/modules" className="text-label-sm text-link">
             모듈 켜기
           </Link>
         </div>

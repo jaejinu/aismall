@@ -60,7 +60,7 @@ export const aiTasks: AiTask[] = [
     noAuto: "초안만 만들어요 · 보내는 건 항상 사람이에요",
     brand: "suggest",
     branch: "suggest",
-    week: { count: 64, result: "수정 없이 발송 61%", recommendation: "응대 지침 개선 제안 1건" },
+    week: { count: 64, result: "수정 없이 발송 61%", recommendation: "응대 지침 개선 제안 2건" },
     month: 241,
   },
   {
