@@ -80,7 +80,9 @@ export function WeekSchedule() {
             강남점 · 10월 셋째 주 (10/12–10/18) · 회차 {weekSessions.length}개 · 평균 채움률 {fill}%
           </p>
         </div>
-        <Button>프로그램 관리</Button>
+        <Link href="/admin/programs" className="rounded-md bg-secondary px-4 py-2 text-label-md text-on-secondary hover:bg-secondary-hover">
+          프로그램 관리
+        </Link>
         <Button variant="primary">회차 추가</Button>
       </header>
 
