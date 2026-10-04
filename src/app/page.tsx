@@ -8,6 +8,8 @@ const screens = [
   { href: "/admin/schedule", title: "일정", desc: "관리자 데스크톱 · 주간 회차 표, AI 편성 제안" },
   { href: "/admin/schedule/S-1014-10", title: "회차 상세", desc: "관리자 데스크톱 · 운영 상태, 신청자 목록, 빠른 변경, 관련 일 (주간 일정에서 회차를 누르면 열려요)" },
   { href: "/admin/schedule/S-1014-10/attendance", title: "출석부", desc: "관리자 데스크톱 · 이용 결과 기록(미확인·출석·노쇼), 미확인 모두 출석, 기록 이력" },
+  { href: "/admin/settings", title: "설정", desc: "관리자 데스크톱 · 설정 목록(사업장 운영·AI·데이터와 보안)" },
+  { href: "/admin/settings/member-app", title: "회원 앱·문의 페이지 설정", desc: "관리자 데스크톱 · 링크·QR, 회원 예약 열기, 문의 폼 항목, 회원 AI 도우미(유료 플랜), 미리보기" },
   { href: "/admin/ai", title: "AI 관리", desc: "관리자 데스크톱 · 업무 유형별 AI 결과, 지켜보기 모드 4분류, 자동 실행 추천(미리보기로만)" },
   { href: "/admin/settings/ai", title: "AI 권한", desc: "관리자 데스크톱 · 업무 유형별 수준, 지점은 좁히기만, 끌 수 없는 규칙, 변경 미리보기·본인 확인 (?as=admin 최고관리자)" },
   { href: "/admin/activity", title: "활동 기록", desc: "관리자 데스크톱 · 누가 무엇을 언제 왜, 사건별 다시 보기(정책 결정·다음 행동)" },
