@@ -96,6 +96,9 @@ export function MemberAppSettings() {
             <h1 className="text-h1 text-fg">회원 앱·문의 페이지</h1>
             <p className="text-body-md text-fg-secondary">강남점 회원이 예약하고 문의하는 페이지예요. 링크와 QR을 인스타그램·카카오 채널에 올려요.</p>
           </div>
+          <Link href="/ask" className="rounded-md px-4 py-2 text-label-md text-fg hover:bg-subtle">
+            문의 페이지 열어 보기
+          </Link>
           <Link href="/member/home" className="rounded-md bg-secondary px-4 py-2 text-label-md text-on-secondary hover:bg-secondary-hover">
             회원 앱 열어 보기
           </Link>

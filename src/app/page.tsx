@@ -17,6 +17,7 @@ const screens = [
   { href: "/admin/activity", title: "활동 기록", desc: "관리자 데스크톱 · 누가 무엇을 언제 왜, 사건별 다시 보기(정책 결정·다음 행동)" },
   { href: "/mobile/push", title: "승인 알림 (관리자 모바일)", desc: "잠금 화면 푸시 → 승인 카드 (?hidden=1 내용 숨김)" },
   { href: "/mobile/approvals", title: "승인함 (관리자 모바일)", desc: "승인 카드 · 다시 확인 · 결과(일부 실패→다시 보내기) · 거절 시트 · 카드 상태 5종(?state=)" },
+  { href: "/ask", title: "공개 문의 (비회원)", desc: "문의 폼 → 접수 완료 · 링크 다시 받기(10분 제한) · 문의 확인(?state=pending·answered·requested·expired)" },
   { href: "/member/home", title: "홈 (회원)", desc: "회원 모바일 · 다가오는 예약, 확인 중인 문의, 자리 있는 회차" },
   { href: "/member/schedule", title: "수업 (회원)", desc: "회원 모바일 · 주간 회차, 신청 시트, 대기 신청" },
   { href: "/member/bookings", title: "내 예약 (회원)", desc: "회원 모바일 · 다가오는 예약, 대기 중, 지난 이용" },
