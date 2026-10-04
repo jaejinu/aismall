@@ -29,7 +29,7 @@ const mainNav: NavItem[] = [
   { href: "/admin/inbox", label: "문의함", icon: Inbox, count: 5 },
   { href: "/admin/approvals", label: "승인함", icon: SquareCheck, count: 3 },
   { href: "/admin/schedule", label: "일정", icon: Calendar },
-  { href: "/admin/bookings", label: "예약", icon: ClipboardList },
+  { href: "/admin/bookings", label: "예약", icon: ClipboardList, count: 2 },
   { href: "/admin/programs", label: "프로그램·회차", icon: LayoutGrid },
   { href: "/admin/members", label: "회원·고객", icon: Users },
 ];

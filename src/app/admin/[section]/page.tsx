@@ -5,7 +5,6 @@ const titles: Record<string, string> = {
   inbox: "문의함",
   approvals: "승인함",
   schedule: "일정",
-  bookings: "예약",
   programs: "프로그램·회차",
   members: "회원·고객",
   ai: "AI 관리",

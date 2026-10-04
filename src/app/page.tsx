@@ -4,6 +4,7 @@ const screens = [
   { href: "/admin/today", title: "오늘", desc: "관리자 데스크톱 · 브리핑, 오늘 회차, 승인 카드" },
   { href: "/admin/inbox", title: "문의함", desc: "관리자 데스크톱 · 대화 목록, AI 초안, 고객 요약" },
   { href: "/admin/approvals", title: "승인함", desc: "관리자 데스크톱 · AI 제안 대기열, 승인 카드, 처리된 요청" },
+  { href: "/admin/bookings", title: "예약", desc: "관리자 데스크톱 · 예약 표, 승인 대기 회원 신청 확정·거절 (?tab=pending)" },
   { href: "/admin/schedule", title: "일정", desc: "관리자 데스크톱 · 주간 회차 표, AI 편성 제안" },
   { href: "/member/home", title: "홈 (회원)", desc: "회원 모바일 · 다가오는 예약, 확인 중인 문의, 자리 있는 회차" },
   { href: "/member/schedule", title: "수업 (회원)", desc: "회원 모바일 · 주간 회차, 신청 시트, 대기 신청" },

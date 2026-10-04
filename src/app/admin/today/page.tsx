@@ -78,6 +78,15 @@ export default function TodayPage() {
               </>
             }
           />
+          <div className="flex items-center gap-3 rounded-xl border border-line bg-surface p-5">
+            <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+              <span className="text-label-md text-fg">회원 신청 2건 · 관리자 확인 대기</span>
+              <span className="text-body-sm text-fg-secondary">윤서아님 10/15(목) 11:00 1:1 레슨 · 강도윤님 휴강 대체 10/17(토) 09:00 기구 · 가장 빠른 만료 내일 09:00</span>
+            </div>
+            <Link href="/admin/bookings?tab=pending" className="shrink-0 rounded-md bg-secondary px-3 py-1 text-label-sm text-on-secondary hover:bg-secondary-hover">
+              신청 확인하기
+            </Link>
+          </div>
           <div id="attendance" className="flex items-center gap-3 rounded-xl border border-line bg-surface p-5">
             <div className="flex min-w-0 flex-1 flex-col gap-0.5">
               <span className="text-label-md text-fg">출석 미확인 · 오늘 10:00 그룹 필라테스</span>
