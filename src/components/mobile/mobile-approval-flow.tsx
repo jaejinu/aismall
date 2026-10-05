@@ -193,11 +193,11 @@ function StateScreen({ request, state, index, total }: { request: ApprovalReques
   );
 }
 
-export function MobileApprovalFlow({ id, state }: { id: string; state?: CardState }) {
+export function MobileApprovalFlow({ id, state, startAtResult }: { id: string; state?: CardState; startAtResult?: boolean }) {
   const index = approvals.findIndex((a) => a.id === id);
   const request = approvals[index];
   const total = approvals.length;
-  const [phase, setPhase] = useState<Phase>("view");
+  const [phase, setPhase] = useState<Phase>(startAtResult ? (partialResult[request.id] ? "partial" : "success") : "view");
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState(request.message?.body ?? "");
   const [sheet, setSheet] = useState(false);
