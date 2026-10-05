@@ -44,7 +44,8 @@
    "Screens / Automation": "86:5",
    "Screens / Mobile Approvals": "120:2",
    "Screens / Approval States (Desktop)": "135:1340",
-   "Screens / Settings": "151:2"
+   "Screens / Settings": "151:2",
+   "Screens / From Code": "177:2"
   },
   "components": {
    "Icon/User": "3:6",
@@ -251,7 +252,26 @@
    "Member / 공개 문의 · 문의 상태 (답변 도착)": "165:1233",
    "Member / 공개 문의 · 문의 상태 (예약 요청함)": "165:1308",
    "Desktop / AI Permissions · 1지점 (대표)": "165:13178",
-   "Desktop / Automation List · 1지점 (대표)": "165:13510"
+   "Desktop / Automation List · 1지점 (대표)": "165:13510",
+   "Desktop / 예약 · 전체": "182:2",
+   "Desktop / 예약 · 승인 대기 · 신청 확인": "183:138",
+   "Desktop / 회차 상세 · S-1014-14": "184:253",
+   "Desktop / 휴강 처리 · S-1015-10": "185:370",
+   "Desktop / 프로그램·회차": "186:481",
+   "Desktop / 프로그램 상세 · 기구 필라테스": "186:763",
+   "Desktop / 회원·고객": "187:690",
+   "Desktop / 회원 상세 · 홍서준": "187:1057",
+   "Desktop / 설정": "188:878",
+   "Desktop / 설정 · 사업장 운영정보": "188:1135",
+   "Desktop / 설정 · 모듈 관리": "189:1108",
+   "Desktop / 설정 · 연결된 앱": "189:1353",
+   "Desktop / 설정 · 응대 지침": "190:1307",
+   "Desktop / 설정 · 참고 자료": "190:1612",
+   "Desktop / 설정 · 고급 AI 설정": "191:1517",
+   "Desktop / 설정 · 원본 기록 조회 (최고관리자)": "191:1855",
+   "Mobile / 회원 홈": "192:1704",
+   "Desktop / 휴강 처리 · 처리 결과 · S-1016-10": "194:1777",
+   "Desktop / 회차 상세 · 빠른 변경 확인 창": "194:2024"
   }
  },
  "completedSteps": [
@@ -294,7 +314,9 @@
   "P6.E-14",
   "P6.E-15",
   "P6.E-16",
-  "P6.E-17"
+  "P6.E-17",
+  "P6.E-21",
+  "P6.E-22"
  ],
  "notes": [
   "Badges: shared TEXT property overwrote per-variant labels -> removed Label prop on badge sets",
@@ -349,7 +371,9 @@
   "10/5 E-18: Risk Badge component labels Korean (위험 낮음/중간/높음/매우 높음). Test A page: 10/4(토)->10/17(토) (2026 real weekday), capacity 4/6->6/8 (그룹 8), Today로->오늘로, baseline memo aligned. Today 12:2/15:581/14:397/15:678/158:1598/158:2022 canonical data (5 sessions, 14:00 기구 노쇼 홍서준, 김하늘 10/16 19:00 2자리 inquiry card, 회차 편성 = 위험 높음). 62:330 deleted. AI Permissions 27:3305: LOW-only auto, no-auto notes on 예약 생성/회차 편성/노쇼, v1 guardrails (no 환불/결제), D-10 who-can-change, 이미래 history. AI Control/Activity Korean labels (지켜보기 모드, 일치/수정/다름/위험). Automation page: 결제 미완료 안내 -> 수업 후기 요청 (LOW, 자동 실행) on all 5 list screens, Recipe -> 추천 Automation, 이용권 -> 수업 전날 참석 확인 요청. New: 문의 상태 165:1233->165:1308 (flow start '공개 문의 · 문의 상태'), 1지점 variants 165:13178, 165:13510 (no branch column/filter).",
   "10/5 E-19 file-wide sweep: multi-branch sidebar hint 'Automation · Analytics는 꺼져 있어요' (Team on; 1지점 frames keep Team off) on Admin/AI Control/Ops/Team/Onboarding/Approval States/17:3. 전체 지점 Today 158:1038 data (강남 빈자리 6, total 13, 김하늘 card, 16:00 기구 빈자리). Team page: Settings→설정, Offboarding→오프보딩, Task→할 일, Activity→활동 기록, 1:1 PT→1:1 레슨, routing rows 환불/결제 → 회차 편성·휴강 (HIGH), 62:1735 persona fixes. Onboarding 53:172 '위험 중간 이상 … 승인 없이 실행되지 않아요', 150:987 Korean labels. Automation page Shadow→지켜보기 모드, Today→오늘 화면. Inbox Task→할 일, PT→1:1 레슨. Member AI Assistant no 결제·환불. 17:3 product 승인함 canonical (김하늘 10/16 19:00 2자리, D-06 bundle copy, 회차 편성 위험 높음). Test A research frames intentionally keep 최OO.",
   "10/5 publishing follow-ups for Figma (code uses canonical data): (1) Member/Schedule 21:3 + Booking Sheet 22:234 still old data (10월 넷째 주 19~25, 매트/기구 labels) → canonical 10/12~18, 그룹·기구·듀엣·1:1. (2) Desktop/Inbox 23:3142 + 157:605: 윤서아 shown as 비회원 (she's a member), '매트 수업', English LEAD/UNKNOWN → code uses 김하늘 2자리 inquiry, 한유진(비회원), Korean status names. (3) Weekly Schedule 23:2310 AI suggestion '화 10:00 정원 8→10 확대' conflicts with 승인함/오늘 '화 10:00 회차 추가 제안' → code uses 회차 추가 (10/20). (4) Member/My Bookings 21:220 old data (10/20 기구, 10/22 1:1 PT-era).",
-  "10/5 E-20 sync with code: brand 재진필라테스 + fake contacts (157 texts, 11 screen pages, logo 재). 27:2887 recs fixed + buttons Ghost/Secondary/Primary(미리보기로 확인하기). 23:2726 canonical S-1014-10 (rows via Attendance Row props Initial/Name/Meta/Result). 23:2310 AI banner → 다음 주 화 10/20 회차 추가; dashed block 141:640 + legend text 24:495 hidden; header btn 회차 추가 kept; title 24:250 '일정' + Nav 일정 Active (also 23:2726). 23:3142 selected 김하늘 2자리 (c-1), row2 한유진; 157:605 parking inquiry moved to 윤서아 12:58. 27:3719 rows rewritten via Activity Row props + nested Actor/Status setProperties, chips 전체12/직원3/회원2/AI4/시스템3 (6th hidden), replay #c-6b30 (step1 31:772 hidden), shell persona 홍지수; row fill vars color/bg/surface|subtle. Public inquiry 155:1022/1052/165:1233/1308 → 평일 저녁, 12:40, 1명, shorter answer. 21:3 week 12–18 수14, cards 14:00/16:00 기구·19:00 그룹(대기 2번), card4 hidden; 22:234 sheet 토 10/17 09:00 기구 관리자 확인; 21:220 one upcoming (10/15 그룹, 마감 지남), card 21:270 hidden, past visits per member.ts."
+  "10/5 E-20 sync with code: brand 재진필라테스 + fake contacts (157 texts, 11 screen pages, logo 재). 27:2887 recs fixed + buttons Ghost/Secondary/Primary(미리보기로 확인하기). 23:2726 canonical S-1014-10 (rows via Attendance Row props Initial/Name/Meta/Result). 23:2310 AI banner → 다음 주 화 10/20 회차 추가; dashed block 141:640 + legend text 24:495 hidden; header btn 회차 추가 kept; title 24:250 '일정' + Nav 일정 Active (also 23:2726). 23:3142 selected 김하늘 2자리 (c-1), row2 한유진; 157:605 parking inquiry moved to 윤서아 12:58. 27:3719 rows rewritten via Activity Row props + nested Actor/Status setProperties, chips 전체12/직원3/회원2/AI4/시스템3 (6th hidden), replay #c-6b30 (step1 31:772 hidden), shell persona 홍지수; row fill vars color/bg/surface|subtle. Public inquiry 155:1022/1052/165:1233/1308 → 평일 저녁, 12:40, 1명, shorter answer. 21:3 week 12–18 수14, cards 14:00/16:00 기구·19:00 그룹(대기 2번), card4 hidden; 22:234 sheet 토 10/17 09:00 기구 관리자 확인; 21:220 one upcoming (10/15 그룹, 마감 지남), card 21:270 hidden, past visits per member.ts.",
+  "10/5 E-21 code-only screens -> Figma page 177:2 'Screens / From Code' (README 177:3). Built with use_figma from DS (no capture): desktop shell = clone of 23:2726 (홍지수 강남점, nav Active per screen, 예약 count 2 shown), Main/Context emptied then rebuilt with Button/Filter Chip/Text Field/Checkbox/Toggle/AI Label/Risk Badge instances + token frames; frames hug height (minHeight 1024; ctx screens set Right column/Body FILL when short). Mobile 회원 홈 = clone of 21:220 with 5 tabs 홈·수업·내 예약·AI 도우미·내 정보 (E-17 applied here only), hugs height. Rows: y0 예약 전체 / 승인 대기+신청 확인 패널 / 회차 상세 S-1014-14 / 휴강 처리 S-1015-10; y1400 프로그램 목록·기구 상세·회원 목록·홍서준 상세; y2800 설정 허브·운영정보·모듈·연결된 앱; y4200 응대 지침·참고 자료·고급 AI·원본 기록(최고관리자); y5600 회원 홈. Audit: 0 unbound fills/strokes, 0 unstyled text. Staff emails @jaejin.example -> @jaejin.example on Team (34 texts) + Onboarding (2) + manyfast n117/n118 (9 nodes).",
+  "10/5 E-22: sidebar '예약' count 2 (Show Count on) on 15 강남점·사업장 오너 frames: 12:2, 15:581, 23:2310, 23:2726, 23:3142, 157:605, 17:3, 136:260/648/1022/1390/1756, 138:1558, 27:3719. Left off on 전체 지점(최고관리자)·1지점(대표)·첫날 frames (no canonical count). State screens on 177:2 row y0: 194:1777 휴강 처리 결과 S-1016-10 (이미 휴강, 강도윤 10/17 옮기기 신청 승인 대기 + 5명 안내 완료), 194:2024 = clone of 184:253 with 시작 시간 19:00 (Focus), save enabled, scrim (overlay/scrim 0.4) + dialog 520 Shadow/Lg '회차 변경 확인 · 시작 14:00 → 19:00 · 4명 안내 · AI 초안'."
  ],
  "docs": {
   "Test A plan": "https://claude.ai/code/artifact/a5bb6aa1-97af-498b-855b-1be203c3b443 (tabs: 기록 양식 P1~P5, 결과 집계; updated 10/5)"
