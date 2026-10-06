@@ -272,7 +272,12 @@
    "Mobile / 회원 홈": "192:1704",
    "Desktop / 휴강 처리 · 처리 결과 · S-1016-10": "194:1777",
    "Desktop / 회차 상세 · 빠른 변경 확인 창": "194:2024",
-   "Desktop / 회차 상세 · 휴강 S-1016-10": "199:1994"
+   "Desktop / 회차 상세 · 휴강 S-1016-10": "199:1994",
+   "Mobile / 관리자 · 오늘": "201:2080",
+   "Mobile / 관리자 · 일정": "201:2441",
+   "Mobile / 관리자 · 문의함": "202:2199",
+   "Mobile / 관리자 · 문의 대화 · 정다은(확인 필요)": "202:2440",
+   "Mobile / 관리자 · 더보기": "202:2633"
   }
  },
  "completedSteps": [
@@ -318,7 +323,8 @@
   "P6.E-17",
   "P6.E-21",
   "P6.E-22",
-  "P6.E-23"
+  "P6.E-23",
+  "P6.E-24"
  ],
  "notes": [
   "Badges: shared TEXT property overwrote per-variant labels -> removed Label prop on badge sets",
@@ -376,7 +382,8 @@
   "10/5 E-20 sync with code: brand 재진필라테스 + fake contacts (157 texts, 11 screen pages, logo 재). 27:2887 recs fixed + buttons Ghost/Secondary/Primary(미리보기로 확인하기). 23:2726 canonical S-1014-10 (rows via Attendance Row props Initial/Name/Meta/Result). 23:2310 AI banner → 다음 주 화 10/20 회차 추가; dashed block 141:640 + legend text 24:495 hidden; header btn 회차 추가 kept; title 24:250 '일정' + Nav 일정 Active (also 23:2726). 23:3142 selected 김하늘 2자리 (c-1), row2 한유진; 157:605 parking inquiry moved to 윤서아 12:58. 27:3719 rows rewritten via Activity Row props + nested Actor/Status setProperties, chips 전체12/직원3/회원2/AI4/시스템3 (6th hidden), replay #c-6b30 (step1 31:772 hidden), shell persona 홍지수; row fill vars color/bg/surface|subtle. Public inquiry 155:1022/1052/165:1233/1308 → 평일 저녁, 12:40, 1명, shorter answer. 21:3 week 12–18 수14, cards 14:00/16:00 기구·19:00 그룹(대기 2번), card4 hidden; 22:234 sheet 토 10/17 09:00 기구 관리자 확인; 21:220 one upcoming (10/15 그룹, 마감 지남), card 21:270 hidden, past visits per member.ts.",
   "10/5 E-21 code-only screens -> Figma page 177:2 'Screens / From Code' (README 177:3). Built with use_figma from DS (no capture): desktop shell = clone of 23:2726 (홍지수 강남점, nav Active per screen, 예약 count 2 shown), Main/Context emptied then rebuilt with Button/Filter Chip/Text Field/Checkbox/Toggle/AI Label/Risk Badge instances + token frames; frames hug height (minHeight 1024; ctx screens set Right column/Body FILL when short). Mobile 회원 홈 = clone of 21:220 with 5 tabs 홈·수업·내 예약·AI 도우미·내 정보 (E-17 applied here only), hugs height. Rows: y0 예약 전체 / 승인 대기+신청 확인 패널 / 회차 상세 S-1014-14 / 휴강 처리 S-1015-10; y1400 프로그램 목록·기구 상세·회원 목록·홍서준 상세; y2800 설정 허브·운영정보·모듈·연결된 앱; y4200 응대 지침·참고 자료·고급 AI·원본 기록(최고관리자); y5600 회원 홈. Audit: 0 unbound fills/strokes, 0 unstyled text. Staff emails now use example domain @jaejin.example on Team (34 texts) + Onboarding (2) + manyfast n117/n118 (9 nodes).",
   "10/5 E-22: sidebar '예약' count 2 (Show Count on) on 15 강남점·사업장 오너 frames: 12:2, 15:581, 23:2310, 23:2726, 23:3142, 157:605, 17:3, 136:260/648/1022/1390/1756, 138:1558, 27:3719. Left off on 전체 지점(최고관리자)·1지점(대표)·첫날 frames (no canonical count). State screens on 177:2 row y0: 194:1777 휴강 처리 결과 S-1016-10 (이미 휴강, 강도윤 10/17 옮기기 신청 승인 대기 + 5명 안내 완료), 194:2024 = clone of 184:253 with 시작 시간 19:00 (Focus), save enabled, scrim (overlay/scrim 0.4) + dialog 520 Shadow/Lg '회차 변경 확인 · 시작 14:00 → 19:00 · 4명 안내 · AI 초안'.",
-  "10/6 E-23: 199:1994 회차 상세 · 휴강 S-1016-10 (177:2, x9240 y0; 휴강 예정·0/6·6명 취소·빠른 변경 불가). '휴강 처리 결과' 버튼 → 194:1777, 194:1777 Back → 199:1994. 사이드바 예약·프로그램·회원·설정 연결."
+  "10/6 E-23: 199:1994 회차 상세 · 휴강 S-1016-10 (177:2, x9240 y0; 휴강 예정·0/6·6명 취소·빠른 변경 불가). '휴강 처리 결과' 버튼 → 194:1777, 194:1777 Back → 199:1994. 사이드바 예약·프로그램·회원·설정 연결.",
+  "10/6 E-24: 관리자 모바일 5개 화면 on 177:2 row y5600 (x540 오늘 201:2080, x1080 일정 201:2441, x1620 문의함 202:2199, x2160 대화 정다은 202:2440, x2700 더보기 202:2633). Shell = clone of 121:263 (reactions cleared, tab Active per screen; 대화는 Back 화살표 + 탭 숨김 + Composer). Short frames fixed 844 with Content FILL so tab bar stays at bottom. Tab links among the 4 tab screens, 정다은 row → 대화, Back → 문의함, 오늘 '일정 보기' → 일정, 더보기 메뉴 → 182:2/186:481/187:690/188:878, 회원 앱 → 192:1704. Flow start '관리자 모바일' 201:2080. Audit: 0 unbound/unstyled."
  ],
  "docs": {
   "Test A plan": "https://claude.ai/code/artifact/a5bb6aa1-97af-498b-855b-1be203c3b443 (tabs: 기록 양식 P1~P5, 결과 집계; updated 10/5)"
