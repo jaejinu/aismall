@@ -51,6 +51,9 @@ const groups: { title: string; screens: Screen[] }[] = [
   {
     title: "관리자 · 모바일",
     screens: [
+      { href: "/mobile/today", title: "오늘", desc: "수치, 가장 급한 승인, AI 브리핑, 확인이 필요한 일, 오늘 회차" },
+      { href: "/mobile/inbox", title: "문의함", desc: "대화, AI 초안은 사람이 고쳐서 보내기, 의심 요청은 직접 답장" },
+      { href: "/mobile/schedule", title: "일정", desc: "이번 주 요일별 회차와 상태(잔여·마감·휴강·출석 미확인)" },
       { href: "/mobile/push", title: "승인 알림", desc: "잠금 화면 알림 → 승인 카드" },
       { href: "/mobile/approvals", title: "승인함", desc: "카드 · 실행 직전 다시 확인 · 결과 · 거절 · 상태 5종" },
       { href: "/mobile/approvals/apr-1?step=result", title: "실행 결과", desc: "예약은 확정, 메시지만 실패 → 다시 보내기" },
@@ -74,7 +77,7 @@ const groups: { title: string; screens: Screen[] }[] = [
 ];
 
 const stats = [
-  { value: "41", label: "퍼블리싱 화면" },
+  { value: "46", label: "퍼블리싱 화면" },
   { value: "90", label: "유저플로우 화면" },
   { value: "57", label: "Figma 컴포넌트" },
   { value: "55", label: "기능 명세" },
