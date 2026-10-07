@@ -6,7 +6,8 @@ A UX planning, design and front-end project for an operations platform for small
 Inquiries, bookings, class sessions and customers live in one place, and repetitive work follows one rule: **AI proposes, a person approves, then it runs**.
 The point is not automation itself but an experience where owners can understand what the AI is about to do — and stay in control of it.
 
-**Live demo** · https://aismall.vercel.app (the first page is the portfolio overview and the full screen list)
+**Live demo** · https://aismall.vercel.app (the first page is the portfolio overview and the full screen list)  
+**Case study (Korean)** · https://aismall.vercel.app/case-study — the reasoning: principles, the planning audit, approval card A/B/C and the usability test plan, designing for failure
 
 ![Admin approval inbox — booking requests proposed by AI and the approval card](src/assets/showcase/approvals.png)
 

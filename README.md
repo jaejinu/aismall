@@ -6,7 +6,8 @@
 문의·예약·회차·고객을 한곳에서 다루고, 반복 업무는 **AI가 제안하고 사람이 승인해서 실행**해요.
 핵심은 자동화 자체가 아니라 "AI가 무엇을 하려는지 이해하고 통제할 수 있는 경험"이에요.
 
-**데모** · https://aismall.vercel.app (첫 화면이 포트폴리오 소개와 전체 화면 목록이에요)
+**데모** · https://aismall.vercel.app (첫 화면이 포트폴리오 소개와 전체 화면 목록이에요)  
+**케이스 스터디** · https://aismall.vercel.app/case-study (왜 그렇게 정했는지 — 원칙, 기획 감사, 승인 카드 A/B/C와 사용성 테스트 계획, 실패 설계)
 
 ![관리자 승인함 — AI가 제안한 예약 요청과 승인 카드](src/assets/showcase/approvals.png)
 

@@ -141,6 +141,9 @@ export default function Home() {
           <Link href="/admin/approvals" className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-label-md text-on-primary hover:bg-primary-hover">
             승인함부터 보기 <ArrowRight size={16} aria-hidden />
           </Link>
+          <Link href="/case-study" className="inline-flex items-center rounded-md bg-secondary px-4 py-2 text-label-md text-on-secondary hover:bg-secondary-hover">
+            케이스 스터디 읽기
+          </Link>
           <a href="#screens" className="inline-flex items-center rounded-md bg-secondary px-4 py-2 text-label-md text-on-secondary hover:bg-secondary-hover">
             전체 화면 목록
           </a>
