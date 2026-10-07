@@ -17,13 +17,14 @@ const tabs: { label: string; icon: LucideIcon; href: string; dot?: boolean }[] =
   { label: "더보기", icon: MoreHorizontal, href: "/mobile/more" },
 ];
 
-export function MobileTabBar() {
+/* active: 하위 화면(출석부 등)에서 강조할 탭 주소. 없으면 지금 주소로 정해요. */
+export function MobileTabBar({ active: activeHref }: { active?: string } = {}) {
   const pathname = usePathname();
   return (
     <nav aria-label="관리자 모바일 메뉴" className="fixed inset-x-0 bottom-0 z-20 mx-auto flex w-full max-w-[430px] border-t border-line bg-surface px-2 pb-5">
       {tabs.map((t) => {
         const Icon = t.icon;
-        const active = pathname.startsWith(t.href);
+        const active = (activeHref ?? pathname).startsWith(t.href);
         return (
           <Link key={t.label} href={t.href} aria-current={active ? "page" : undefined} className="flex flex-1 flex-col items-center gap-0.5 pb-1 pt-2">
             <span className="relative">

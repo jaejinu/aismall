@@ -18,7 +18,7 @@ export const metadata: Metadata = { title: "오늘 (모바일) · 재진필라�
 const mobileHref: Record<(typeof briefing)[number]["kind"], string> = {
   clock: "/mobile/approvals",
   risk: "/mobile/approvals",
-  attendance: "/admin/schedule/S-1014-10/attendance",
+  attendance: "/mobile/attendance/S-1014-10",
   failed: "#todo",
 };
 
@@ -95,7 +95,7 @@ export default function MobileTodayPage() {
             </Link>
           </div>
           <MobileSessionList sessions={weekSessions.filter((s) => s.day === "2026-10-14")} />
-          <p className="text-caption text-fg-muted">회차 상세·출석부는 PC 화면으로 열려요.</p>
+          <p className="text-caption text-fg-muted">출석 미확인 회차는 모바일 출석부로, 회차 상세는 PC 화면으로 열려요.</p>
         </section>
       </main>
       <MobileTabBar />
