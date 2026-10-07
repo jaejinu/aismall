@@ -13,6 +13,9 @@ import mPush from "@/assets/showcase/m-push.png";
 import mResult from "@/assets/showcase/m-result.png";
 import memberHome from "@/assets/showcase/member-home.png";
 import memberAssist from "@/assets/showcase/member-assist.png";
+import mAdminToday from "@/assets/showcase/m-admin-today.png";
+import mInboxDraft from "@/assets/showcase/m-inbox-draft.png";
+import mInboxFlagged from "@/assets/showcase/m-inbox-flagged.png";
 
 /*
  * 첫 화면 = 포트폴리오 소개. 위에서부터 한 줄 소개 → 문제와 결정(케이스) → 과정 → 전체 화면 목록.
@@ -240,6 +243,31 @@ export default function Home() {
             <Phone src={memberAssist} alt="회원 AI 도우미" />
             <figcaption className="text-caption text-fg-secondary">AI 도우미</figcaption>
           </figure>
+        </div>
+      </Case>
+
+      <Case
+        no="06 · 관리자 모바일"
+        title="수업 사이에 폰으로, 넓은 일은 PC로"
+        problem="사장님은 수업 중간이나 이동 중에 폰으로 확인해요. 모든 메뉴를 작은 화면에 넣으면 정작 급한 일을 못 찾아요."
+        decision={
+          <p>
+            모바일은 오늘·승인함·문의함·일정 네 가지만 깊게 만들고, 설정·활동 기록처럼 넓은 화면이 필요한 메뉴는 PC로 연결해요(PC로 열린다는 표시를 붙였어요). 문의 답장은 AI 초안을 사람이 고쳐서 보내고,
+            지시를 바꾸려는 의심 문의에는 초안을 만들지 않아요.
+          </p>
+        }
+      >
+        <div className="grid grid-cols-3 gap-3 md:max-w-3xl md:gap-6">
+          {[
+            { src: mAdminToday, label: "오늘 · 급한 승인과 브리핑" },
+            { src: mInboxDraft, label: "AI 초안 · 사람이 보내요" },
+            { src: mInboxFlagged, label: "의심 문의 · 초안 없이 직접" },
+          ].map((c) => (
+            <figure key={c.label} className="flex flex-col gap-2">
+              <Phone src={c.src} alt={`관리자 모바일 ${c.label}`} />
+              <figcaption className="text-caption text-fg-secondary">{c.label}</figcaption>
+            </figure>
+          ))}
         </div>
       </Case>
 

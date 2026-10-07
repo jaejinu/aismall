@@ -17,12 +17,12 @@
 | --- | --- | --- |
 | 관리자 오늘 | [`/admin/today`](https://aismall.vercel.app/admin/today) | 브리핑, 오늘 회차, 확인이 필요한 일(예약은 완료·메시지는 실패) |
 | 승인함 | [`/admin/approvals`](https://aismall.vercel.app/admin/approvals) | AI 제안 승인 카드 — 실행할 행동, 회원에게 갈 메시지, 근거 펼치기, 수정·거절 |
-| 모바일 승인 | [`/mobile/push`](https://aismall.vercel.app/mobile/push) | 잠금 화면 알림 → 카드 → 실행 직전 다시 확인 → 일부 실패 → 다시 보내기 |
+| 관리자 모바일 | [`/mobile/today`](https://aismall.vercel.app/mobile/today) | 오늘·승인함·문의함·일정·더보기 5개 탭 · 잠금 화면 알림 → 카드 → 다시 확인 → 일부 실패 → 다시 보내기 |
 | AI 권한 | [`/admin/settings/ai`](https://aismall.vercel.app/admin/settings/ai?as=admin&preview=reminder) | 업무 유형별 수준, 끌 수 없는 규칙, 바꾸기 전 영향 미리보기, 본인 확인 |
 | 활동 기록 | [`/admin/activity`](https://aismall.vercel.app/admin/activity) | 누가·무엇을·왜 — 사건 단위로 다시 보기(정책 결정·다음 행동) |
 | 회원 앱 | [`/member/home`](https://aismall.vercel.app/member/home) | 회원이 직접 예약·대기 신청, 참석 확인, 휴강 안내 |
 
-관리자 데스크톱(오늘·문의함·승인함·일정·회차·출석부·휴강·예약·프로그램·회원·AI 관리·활동 기록·설정), 관리자 모바일 승인, 회원 모바일 화면이 있어요.
+관리자 데스크톱(오늘·문의함·승인함·일정·회차·출석부·휴강·예약·프로그램·회원·AI 관리·활동 기록·설정), 관리자 모바일(오늘·승인함·문의함·일정·더보기), 회원 모바일, 비회원 공개 문의 화면이 있어요.
 
 ## 문제 → 결정
 
@@ -54,6 +54,15 @@ AI가 '예약 만들고 메시지 보내기'를 하려 할 때, 정보가 많으
 <p>
   <img src="src/assets/showcase/member-home.png" width="230" alt="회원 홈" />
   <img src="src/assets/showcase/member-assist.png" width="230" alt="회원 AI 도우미" />
+</p>
+
+### 05 · 관리자 모바일: 수업 사이에 폰으로, 넓은 일은 PC로
+모바일은 오늘·승인함·문의함·일정 네 가지만 깊게 만들고, 설정·활동 기록처럼 넓은 화면이 필요한 메뉴는 PC로 연결해요. 문의 답장은 AI 초안을 사람이 고쳐서 보내고, 지시를 바꾸려는 의심 문의에는 초안을 만들지 않아요.
+
+<p>
+  <img src="src/assets/showcase/m-admin-today.png" width="230" alt="관리자 모바일 오늘" />
+  <img src="src/assets/showcase/m-inbox-draft.png" width="230" alt="문의 대화 — AI 초안을 사람이 보내요" />
+  <img src="src/assets/showcase/m-inbox-flagged.png" width="230" alt="의심 문의 — 초안 없이 직접 답장" />
 </p>
 
 ## 설계에서 지킨 원칙
@@ -97,7 +106,7 @@ npm run dev   # http://localhost:3000
 | 위치 | 내용 |
 | --- | --- |
 | `src/app/admin/` | 관리자 데스크톱 화면 |
-| `src/app/mobile/` | 관리자 모바일 승인 화면 |
+| `src/app/mobile/` | 관리자 모바일 화면(오늘·승인함·문의함·일정·더보기) |
 | `src/app/member/` | 회원 모바일 화면 |
 | `src/components/ui/` | 공통 컴포넌트(배지·버튼·필터 칩·토글·회차 줄 등) |
 | `src/data/` | 샘플 데이터 — 모든 화면이 같은 기준 데이터를 써요 |
