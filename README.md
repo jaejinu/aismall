@@ -1,117 +1,78 @@
 # AI Small Business OS
 
-**한국어** · [English](README.en.md)
+[English](README.en.md) · [공개 데모](https://aismall.vercel.app) · [포트폴리오](docs/PORTFOLIO.md)
 
-예약 중심 소규모 사업자(1~5인 필라테스·요가 스튜디오)를 위한 운영 플랫폼의 UX 기획·디자인·퍼블리싱 프로젝트예요.
-문의·예약·회차·고객을 한곳에서 다루고, 반복 업무는 **AI가 제안하고 사람이 승인해서 실행**해요.
-핵심은 자동화 자체가 아니라 "AI가 무엇을 하려는지 이해하고 통제할 수 있는 경험"이에요.
+필라테스·요가·클래스처럼 예약 중심으로 운영하는 소규모 사업장을 위한 플랫폼이에요. 문의 → 예약 → 회차 → 출석 → 고객 관리를 연결하고, 반복 업무는 **AI가 제안하고 사람이 승인**하는 방식으로 발전시켜요.
 
-**데모** · https://aismall.vercel.app (첫 화면이 포트폴리오 소개와 전체 화면 목록이에요)  
-**케이스 스터디** · https://aismall.vercel.app/case-study (왜 그렇게 정했는지 — 원칙, 기획 감사, 승인 카드 A/B/C와 사용성 테스트 계획, 실패 설계)
+여러 사업장에 제공하는 **멀티테넌트 SaaS**가 목표예요. 독립 조직·브랜드를 테넌트로, 그 아래 매장을 지점으로 구분해요. 한 계정이 여러 조직에 소속될 수 있지만 각 조직의 데이터와 권한은 분리해요.
 
-![관리자 승인함 — AI가 제안한 예약 요청과 승인 카드](src/assets/showcase/approvals.png)
+## 현재 구현 범위
 
-> 1차 범위는 리서치 → UX/UI → 디자인 시스템 → 프로토타입 → 퍼블리싱이에요. 실제 AI·서버 연결은 2차 범위라, 화면 데이터는 모두 샘플이고 새로고침하면 처음 상태로 돌아가요.
-> 샘플 기준: 2026-10-14(수) 13:00, 재진필라테스 강남점, 사업장 오너 홍지수. 등장하는 사람과 연락처는 모두 지어낸 것이에요.
+| 영역 | 현재 상태 |
+| --- | --- |
+| UX·화면 | 기존 데모 47개 + 로그인·조직·직원 개발 화면 4개 |
+| 공개 데모 | 샘플 데이터와 화면 내 상태로 동작. 실제 운영 데이터 저장·인증 없음 |
+| 서버 기반 | PostgreSQL 스키마, 조직·지점 RLS, 서버 소속 검사, 지점 조회·이름 변경 서비스 |
+| 개발 DB | Supabase 서울: 마이그레이션·앱 전용 역할·TLS·원격 격리 검사 완료 |
+| 변경 안전성 | 예상 버전 검사, 트랜잭션, 지점 이름 변경 감사 기록 |
+| 검증 | 임시 PostgreSQL의 제한된 실행 계정으로 격리·권한·실패·동시 수정 테스트 |
+| 로그인·온보딩 | 서버 인증·내부 사용자 연결·첫 조직과 지점 생성 구현. 실제 계정 로그인·조직/지점 조회·로그아웃 차단 확인 |
+| 직원 관리 | 이메일에 연결된 일회용 코드 초대·수락, 지점/역할 배정, 접근 회수·감사 구현 |
+| 아직 필요한 것 | 예약 운영 UI 연결, 예약 DB, 알림·결제·AI 실행·운영 인프라 |
 
-## 먼저 볼 화면
+기존 공개 데모는 샘플 데이터를 유지해요. 새 `/login`·`/workspace`에는 Supabase 인증과 DB 기반 조직·지점 흐름을 구현했어요. [로그인 사용법·검증 범위](docs/AUTH_ONBOARDING.md)를 봐요. **현재 공개 배포는 실사용 SaaS가 아니에요.**
 
-| 화면 | 주소 | 볼 것 |
-| --- | --- | --- |
-| 관리자 오늘 | [`/admin/today`](https://aismall.vercel.app/admin/today) | 브리핑, 오늘 회차, 확인이 필요한 일(예약은 완료·메시지는 실패) |
-| 승인함 | [`/admin/approvals`](https://aismall.vercel.app/admin/approvals) | AI 제안 승인 카드 — 실행할 행동, 회원에게 갈 메시지, 근거 펼치기, 수정·거절 |
-| 관리자 모바일 | [`/mobile/today`](https://aismall.vercel.app/mobile/today) | 오늘·승인함·문의함·일정·더보기 5개 탭 · 잠금 화면 알림 → 카드 → 다시 확인 → 일부 실패 → 다시 보내기 |
-| AI 권한 | [`/admin/settings/ai`](https://aismall.vercel.app/admin/settings/ai?as=admin&preview=reminder) | 업무 유형별 수준, 끌 수 없는 규칙, 바꾸기 전 영향 미리보기, 본인 확인 |
-| 활동 기록 | [`/admin/activity`](https://aismall.vercel.app/admin/activity) | 누가·무엇을·왜 — 사건 단위로 다시 보기(정책 결정·다음 행동) |
-| 회원 앱 | [`/member/home`](https://aismall.vercel.app/member/home) | 회원이 직접 예약·대기 신청, 참석 확인, 휴강 안내 |
+## 문서 길잡이
 
-관리자 데스크톱(오늘·문의함·승인함·일정·회차·출석부·휴강·예약·프로그램·회원·AI 관리·활동 기록·설정), 관리자 모바일(오늘·승인함·문의함·일정·출석부·더보기), 회원 모바일, 비회원 공개 문의 화면이 있어요.
+| 궁금한 것 | 문서 |
+| --- | --- |
+| 어디까지 했고 다음에 무엇을 하나요? | [진행 현황·새 세션 체크리스트](docs/PROJECT_STATUS.md) |
+| 코드 구조와 요청 흐름은 어떻게 되나요? | [현재 아키텍처](docs/ARCHITECTURE.md) |
+| 여러 조직을 어떻게 분리하나요? | [멀티테넌트 설계와 확장 계획](docs/MULTITENANT_ARCHITECTURE.md) |
+| DB·로그인은 어떤 공급자를 쓰나요? | [공급자 선정](docs/PROVIDER_DECISION.md) · [Supabase 설정](docs/SUPABASE_SETUP.md) |
+| 로컬 실행·DB·테스트는 어떻게 하나요? | [개발 가이드](docs/DEVELOPMENT.md) |
+| 실제 운영을 위해 무엇을 고쳐야 하나요? | [SaaS 운영 전환 점검](docs/SAAS_READINESS_REVIEW.md) |
+| 기획·디자인 결정의 배경은 무엇인가요? | [포트폴리오](docs/PORTFOLIO.md) · [케이스 스터디](https://aismall.vercel.app/case-study) |
+| 각 화면과 과거 작업은 어디 있나요? | [화면 목록](docs/reference/screens.md) · [전체 작업 로그](docs/reference/work-log.md) |
 
-## 문제 → 결정
+## 빠른 시작
 
-### 01 · 승인 카드: 짧은 시간에 무엇이 바뀌는지 알 수 있게
-AI가 '예약 만들고 메시지 보내기'를 하려 할 때, 정보가 많으면 읽지 않고 승인하고 적으면 불안해서 누르지 못해요. 같은 요청을 세 가지 밀도(A 전부 · B 요약 · C 핵심 + 근거 펼치기)로 만들고 사용성 테스트(Test A)로 고르기로 했어요. 지금 화면은 C안이에요.
+Node.js 22.9 이상과 npm을 사용해요. 화면 데모 실행에는 DB가 필요하지 않아요.
 
-<p>
-  <img src="src/assets/showcase/test-a-card-a.png" width="230" alt="승인 카드 A안 — 전부" />
-  <img src="src/assets/showcase/test-a-card-b.png" width="230" alt="승인 카드 B안 — 요약" />
-  <img src="src/assets/showcase/test-a-card-c.png" width="230" alt="승인 카드 C안 — 핵심과 근거 펼치기" />
-</p>
-
-### 02 · 실행 결과: 실패를 숨기지 않아요
-예약은 됐는데 알림톡만 실패하면 '처리 완료'로는 아무도 몰라요. 실행 직전에 정원·정책·연결을 다시 확인하고, 결과는 "된 것 · 안 된 것 · 다음 행동"으로 보여 주고 실패한 메시지만 다시 보내요.
-
-<p>
-  <img src="src/assets/showcase/m-push.png" width="230" alt="잠금 화면 승인 알림" />
-  <img src="src/assets/showcase/m-result.png" width="230" alt="실행 결과 — 예약은 확정, 메시지만 실패" />
-</p>
-
-### 03 · AI 권한: 좁히기만, 어떤 규칙은 끌 수 없게
-자동 실행은 위험 낮음만, 예약 생성·변경·취소는 항상 승인 후 실행. 지점(사업장 오너)은 브랜드 기본값보다 좁히기만 하고, 수신 동의 없는 회원에게 메시지·노쇼 위험을 이유로 한 예약 제한은 설정으로도 바꿀 수 없어요.
-
-![AI 권한 — 업무 유형별 수준, 끌 수 없는 규칙, 변경 미리보기](src/assets/showcase/ai-permissions.png)
-
-### 04 · 회원 앱: 회원은 직접, 확인도 회원이
-회원은 수업을 직접 신청·변경·취소하고, AI 도우미는 예약 초안만 만들어요. 회원이 버튼을 눌러야 예약돼요.
-
-<p>
-  <img src="src/assets/showcase/member-home.png" width="230" alt="회원 홈" />
-  <img src="src/assets/showcase/member-assist.png" width="230" alt="회원 AI 도우미" />
-</p>
-
-### 05 · 관리자 모바일: 수업 사이에 폰으로, 넓은 일은 PC로
-모바일은 오늘·승인함·문의함·일정 네 가지(와 출석부)만 깊게 만들고, 설정·활동 기록처럼 넓은 화면이 필요한 메뉴는 PC로 연결해요. 문의 답장은 AI 초안을 사람이 고쳐서 보내고, 지시를 바꾸려는 의심 문의에는 초안을 만들지 않아요.
-
-<p>
-  <img src="src/assets/showcase/m-admin-today.png" width="230" alt="관리자 모바일 오늘" />
-  <img src="src/assets/showcase/m-inbox-draft.png" width="230" alt="문의 대화 — AI 초안을 사람이 보내요" />
-  <img src="src/assets/showcase/m-inbox-flagged.png" width="230" alt="의심 문의 — 초안 없이 직접 답장" />
-</p>
-
-## 설계에서 지킨 원칙
-
-- **AI는 제안, 사람은 승인** — 자동 실행은 위험 낮음만. 위험 중간은 같은 유형을 묶어 한 번에 승인. AI의 예약 생성·변경·취소는 항상 승인 후 실행.
-- **끌 수 없는 규칙** — 수신 동의 없는 회원에게 메시지 금지, 노쇼 위험을 이유로 예약 제한 금지 등은 권한 설정으로도 바꿀 수 없어요.
-- **실패를 숨기지 않기** — 결과는 "된 것 · 안 된 것 · 다음 행동"으로 보여 줘요(예: 예약은 확정, 메시지만 실패).
-- **권한은 좁히기만** — 브랜드 기본값(최고관리자) 아래에서 지점(사업장 오너)은 더 좁히기만 해요.
-- **시간이 지나도 출석이 아니에요** — 이용 결과(미확인·출석·노쇼)는 예약 상태와 따로 기록해요.
-- **한국어 표시명** — 화면에는 오늘·문의함·승인함·지켜보기 모드처럼 한국어만 써요.
-
-결정 근거는 [`docs/reference/decisions-D01-D15.md`](docs/reference/decisions-D01-D15.md), 진행 기록은 [`docs/PROJECT_STATUS.md`](docs/PROJECT_STATUS.md)에 있어요.
-
-## 과정
-
-1. **기획** — PRD·요구사항·기능·스펙·정책을 정리하고, 외부 검토 의견(D-01~D-15)을 반영했어요. 유저플로우와 와이어프레임까지.
-2. **디자인 시스템** — Figma 변수(색 라이트·다크, 간격, 반경), 텍스트 스타일 10개, 컴포넌트 57개.
-
-   <img src="src/assets/showcase/figma-foundations.png" width="420" alt="Figma 색 변수 — 라이트 모드" />
-
-3. **사용성 테스트 준비(Test A)** — 승인 카드 A/B/C안 비교 계획, 진행 대본, 기록 양식.
-4. **퍼블리싱** — Figma 변수를 CSS 토큰으로 1:1 옮기고, 화면끼리 데이터가 맞도록 기준 데이터([`docs/reference/canonical-data.md`](docs/reference/canonical-data.md)) 하나를 함께 써요.
-
-## 기술
-
-- Next.js 16 (App Router) · React 19 · TypeScript
-- Tailwind CSS v4 — `src/app/globals.css`에 Figma 변수와 1:1인 디자인 토큰, 다크 모드
-- lucide-react 아이콘 · tailwind-merge
-- Vercel 배포
-- 도구: Figma, manyfast(기획 문서), Claude Code(AI 페어 프로그래밍)
-
-## 실행
-
-```bash
-npm install
-npm run dev   # http://localhost:3000
+```sh
+npm ci
+npm run dev
 ```
 
-## 구조
+[localhost:3000](http://localhost:3000)에서 첫 화면과 전체 화면 목록을 볼 수 있어요.
 
-| 위치 | 내용 |
-| --- | --- |
-| `src/app/admin/` | 관리자 데스크톱 화면 |
-| `src/app/mobile/` | 관리자 모바일 화면(오늘·승인함·문의함·일정·출석부·더보기) |
-| `src/app/member/` | 회원 모바일 화면 |
-| `src/components/ui/` | 공통 컴포넌트(배지·버튼·필터 칩·토글·회차 줄 등) |
-| `src/data/` | 샘플 데이터 — 모든 화면이 같은 기준 데이터를 써요 |
-| `src/assets/showcase/` | 첫 화면·README 스크린샷 |
-| `docs/` | 진행 현황, 결정 기록, Figma 규칙, 기준 데이터 |
+```sh
+npm run typecheck
+npm run lint
+npm test               # Docker 필요: 임시 PostgreSQL 생성 → 테스트 → 삭제
+npm run build
+```
+
+DB 설정과 마이그레이션은 [개발 가이드](docs/DEVELOPMENT.md)를 따라요. `main` 푸시는 공개 배포로 이어지므로 커밋·푸시는 별도 요청이 있을 때만 해요.
+
+## 기술과 구조
+
+Next.js 16 App Router · React 19 · TypeScript · Tailwind CSS 4 · PostgreSQL 17 · node-postgres
+
+```text
+src/app/                  공개 데모와 관리자·회원 화면
+src/components/           공통 UI·기능별 화면 구성
+src/data/                 샘플 데이터 (운영 DB와 연결되지 않음)
+src/server/auth/          검증된 세션 인터페이스
+src/server/access/        조직 소속 확인·트랜잭션·RLS 컨텍스트
+src/server/db/            제한된 실행 계정의 DB 연결 풀
+src/server/services/      지점 조회·이름 변경 업무 서비스
+db/migrations/            버전·체크섬으로 관리하는 SQL
+scripts/                  마이그레이션·임시 DB 테스트 실행
+tests/                    실제 DB 격리·권한 통합 테스트
+docs/                     현황·설계·개발·운영 점검·기획 기록
+```
+
+두 실제 계정의 직원 초대·역할 변경·회수 검증을 완료했어요. 다음 구현 순서는 수동 예약 한 흐름 → 알림·복구·구독 → 승인형 AI예요. 운영 배포는 아직 하지 않았어요.
+
+직원 초대와 권한 변경 사용법·제한·검증 범위는 [직원 관리](docs/TEAM_MANAGEMENT.md)를 봐요. 초대 메일은 자동 발송하지 않아요.
