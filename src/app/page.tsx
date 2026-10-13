@@ -33,6 +33,13 @@ type Screen = { href: string; title: string; desc: string };
 
 const groups: { title: string; screens: Screen[] }[] = [
   {
+    title: "개발 중 · 실제 로그인과 조직",
+    screens: [
+      { href: "/login", title: "로그인", desc: "개발 계정으로 로그인" },
+      { href: "/workspace", title: "내 조직·첫 사업장", desc: "조직 선택, 첫 조직·지점 생성, 직원 초대 수락·관리" },
+    ],
+  },
+  {
     title: "관리자 · 데스크톱",
     screens: [
       { href: "/admin/today", title: "오늘", desc: "브리핑, 오늘 회차, 확인이 필요한 일" },
@@ -81,7 +88,7 @@ const groups: { title: string; screens: Screen[] }[] = [
 ];
 
 const stats = [
-  { value: "47", label: "퍼블리싱 화면" },
+  { value: "51", label: "화면 (데모 47 + 개발 4)" },
   { value: "90", label: "유저플로우 화면" },
   { value: "57", label: "Figma 컴포넌트" },
   { value: "55", label: "기능 명세" },
