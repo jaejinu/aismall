@@ -1,0 +1,20 @@
+name: aismall-local
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: aismall_migrator
+      POSTGRES_PASSWORD: aismall_local_only
+      POSTGRES_DB: aismall
+    ports:
+      - "127.0.0.1:${AISMALL_DB_PORT:-55432}:5432"
+    volumes:
+      - aismall_pgdata:/var/lib/postgresql/data
+      - ./db/local/init.sql:/docker-entrypoint-initdb.d/001-roles.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aismall_migrator -d aismall"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+volumes:
+  aismall_pgdata:
