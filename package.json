@@ -11,8 +11,10 @@
     "test": "npm run test:config && npm run test:db",
     "test:db": "node scripts/test-db.mjs",
     "db:migrate": "node scripts/migrate.mjs",
-    "test:config": "node --test tests/provider-config.test.mjs",
-    "provider:check": "node scripts/check-provider.mjs"
+    "test:config": "node --test tests/provider-config.test.mjs tests/notification-config.test.mjs tests/notification-pilot.test.mjs",
+    "provider:check": "node scripts/check-provider.mjs",
+    "notifications:pilot": "node --conditions=react-server --import tsx scripts/notification-pilot.mjs",
+    "notifications:check": "node scripts/check-notifications.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
@@ -23,6 +25,7 @@
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "server-only": "^0.0.1",
+    "svix": "^2.8.0",
     "tailwind-merge": "^3.7.0"
   },
   "devDependencies": {

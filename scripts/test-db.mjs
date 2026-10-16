@@ -29,7 +29,7 @@ try {
   finally { await client.end(); }
   await migrate(admin);
   await migrate(admin); // Reapplying is a no-op.
-  const child = spawn(process.execPath, ['--conditions=react-server', '--import', 'tsx', '--test', '--test-concurrency=1', 'tests/tenancy.test.ts', 'tests/auth-onboarding.test.ts', 'tests/team.test.ts'], {
+  const child = spawn(process.execPath, ['--conditions=react-server', '--import', 'tsx', '--test', '--test-concurrency=1', 'tests/tenancy.test.ts', 'tests/auth-onboarding.test.ts', 'tests/team.test.ts', 'tests/bookings.test.ts', 'tests/member-bookings.test.ts', 'tests/notification-outbox.test.ts', 'tests/notification-webhook.test.ts'], {
     stdio: 'inherit', env: { ...process.env, TEST_DATABASE_ADMIN_URL: admin, TEST_DATABASE_URL: `postgresql://aismall_runtime:aismall_local_only@127.0.0.1:${port}/postgres` },
   });
   const code = await new Promise((resolve, reject) => { child.on('error', reject); child.on('exit', resolve); });

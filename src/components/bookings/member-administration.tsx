@@ -1,0 +1,23 @@
+import {SearchSelect} from './search-select';
+import { TeamForm } from '@/components/auth/team-form';
+import { memberAdminAction } from '@/app/workspace/member-actions';
+import type { BookingOverview, BookingScope } from '@/server/services/bookings';
+import type { CustomerLink, PendingRequest } from '@/server/services/member-bookings';
+const field='mt-1 block w-full rounded-lg border border-line bg-surface p-3';
+const confirm=<label className="flex gap-2 text-body-sm"><input type="checkbox" name="confirm" value="yes" required/>선택한 작업을 확인했어요.</label>;
+const date=(v:string)=>new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',dateStyle:'short',timeStyle:'short'}).format(new Date(v));
+export function MemberAdministration({scope,data,links,requests,mode="requests"}:{scope:BookingScope;data:BookingOverview;links:CustomerLink[];requests:PendingRequest[];mode?:"requests"|"settings"}) {
+ return <section className="rounded-xl border border-line bg-surface p-6 space-y-5">
+ {mode==='requests'&&<><h2 className="text-h2">회원 신청·승인 대기</h2><p className="text-body-sm">관리자 확인이 필요한 신청을 처리해요. 대기 신청은 정원을 차지하지 않으며 승인 때 자리를 다시 확인해요. 자동 확정 신청은 여기에 쌓이지 않아요. 오래된 신청부터 최대 100건 표시해요.</p>
+ <ul className="space-y-4">{requests.map(r=><li key={r.id} className="rounded-lg border border-line p-4 space-y-4"><p className="text-label-md">{r.customer} · {r.program} · {date(r.starts_at)}</p>
+ {(['approve','reject'] as const).map(op=><details key={op}><summary className="cursor-pointer text-label-sm">{op==='approve'?'신청 승인':'신청 거절'}</summary><div className="mt-3"><TeamForm action={memberAdminAction.bind(null,scope,op)} label={op==='approve'?'승인하고 예약 확정하기':'신청 거절하기'} danger={op==='reject'}><input type="hidden" name="request" value={r.id}/><input type="hidden" name="version" value={r.version}/><label className="block text-label-sm">회원에게 보이는 처리 사유<input className={field} name="reason" required maxLength={200}/></label>{confirm}</TeamForm></div></details>)}</li>)}</ul>{!requests.length&&<p>승인 대기 중인 신청이 없어요.</p>}
+ </>}
+ {mode==='settings'&&<><h2 className="text-h2">회원 신청 설정</h2><details open><summary className="cursor-pointer text-label-lg">회원 연결 관리</summary><div className="mt-4 space-y-5">
+ <p className="text-body-sm">고객의 기존 예약도 연결 계정에 표시돼요. 본인 이메일과 고객을 확인해 주세요. 미수락 코드를 재발급하면 이전 코드는 무효가 돼요.</p>
+ {data.customers.length>0&&<TeamForm action={memberAdminAction.bind(null,scope,'invite')} label="회원 연결 코드 만들기" codeHelp="회원이 로그인 후 ‘회원 예약’ 화면에서 입력해요. 메일은 자동 발송되지 않아요."><SearchSelect scope={scope} kind="customer" name="customer" label="연결할 고객" initial={data.customers.map(c=>({id:c.id,label:`${c.name} · ${c.id.slice(0,8)}`}))}/><label className="block text-label-sm">회원 이메일<input className={field} name="email" type="email" required maxLength={254}/></label>{confirm}</TeamForm>}
+ <ul className="space-y-3">{links.map(l=><li key={l.id} className="rounded-lg border border-line p-3"><p>{l.customer} · {l.email} · {l.status==='active'?'연결 완료':l.status==='revoked'?'연결 회수됨':`수락 대기 · ${date(l.expires_at)} 만료`}</p>{l.status!=='revoked'&&<TeamForm action={memberAdminAction.bind(null,scope,'revoke')} label="회원 연결 회수하기" danger><input type="hidden" name="link" value={l.id}/><p className="text-body-sm">회원 조회·신청을 차단해요. 기존 예약은 유지돼요. 회수 후 재연결은 아직 지원하지 않아요.</p>{confirm}</TeamForm>}</li>)}</ul>
+ </div></details>
+ <details><summary className="cursor-pointer text-label-lg">프로그램별 회원 신청 열기</summary><p className="my-3 text-body-sm">프로그램마다 관리자 확인 또는 자동 확정을 선택해요. 자동 확정은 신청 즉시 자리를 확보해요. 변경한 설정은 새 신청부터 적용하고 기존 승인 대기는 그대로 유지해요.</p><div className="space-y-4">{data.programs.slice(0,200).map(p=><div key={p.id} className="rounded-lg border border-line p-4"><h3 className="mb-3 text-label-md">{p.name} · {p.member_booking_enabled?'신청 열림':'신청 닫힘'} · {p.confirmation_mode==='automatic'?'자동 확정':'관리자 확인'}</h3><TeamForm key={`${p.id}-${p.member_booking_enabled}-${p.confirmation_mode}-${p.application_deadline_hours}`} action={memberAdminAction.bind(null,scope,'policy')} label="회원 신청 설정 저장"><input type="hidden" name="program" value={p.id}/><label className="block text-label-sm">회원 신청<select className={field} name="enabled" defaultValue={p.member_booking_enabled?'yes':'no'}><option value="no">닫기</option><option value="yes">열기</option></select></label><label className="block text-label-sm">확정 방식<select className={field} name="mode" defaultValue={p.confirmation_mode}><option value="manual">관리자 확인 후 확정</option><option value="automatic">신청 즉시 자동 확정</option></select></label><label className="block text-label-sm">신청 마감<select className={field} name="hours" defaultValue={p.application_deadline_hours}><option value="24">시작 24시간 전</option><option value="2">시작 2시간 전</option></select></label>{confirm}</TeamForm></div>)}</div></details>
+ </>}
+ </section>;
+}

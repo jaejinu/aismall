@@ -1,0 +1,68 @@
+import assert from 'node:assert/strict';
+import {randomUUID, createHash} from 'node:crypto';
+import pg from 'pg';
+process.loadEnvFile('.env.local');
+const ref=process.argv[2];
+if(!ref||process.env.SUPABASE_URL!==`https://${ref}.supabase.co`) throw new Error('Exact development project reference required');
+const c=new pg.Client({connectionString:process.env.DATABASE_URL,connectionTimeoutMillis:5000});
+let connected=false;
+try {
+ await c.connect();connected=true;await c.query('BEGIN');
+ const identity=async()=> (await c.query('SELECT app_private.resolve_identity($1,$2) AS id',[`${process.env.SUPABASE_URL}/auth/v1`,randomUUID()])).rows[0].id;
+ const owner=await identity(),member=await identity(),stranger=await identity();
+ const tenant=(await c.query('SELECT app_private.create_first_organization($1,$2,$3) AS id',[owner,'Member verification','Temporary branch'])).rows[0].id;
+ await c.query("SELECT set_config('app.user_id',$1,true),set_config('app.tenant_id',$2,true)",[owner,tenant]);
+ const branch=(await c.query('SELECT id FROM app.branches')).rows[0].id;
+ const customer=(await c.query('SELECT app_private.create_customer($1,$2,$3) AS id',[tenant,branch,'Synthetic member'])).rows[0].id;
+ const program=(await c.query('SELECT app_private.create_program($1,$2,$3) AS id',[tenant,branch,'Synthetic program'])).rows[0].id;
+ const session=(await c.query("SELECT app_private.create_session($1,$2,$3,now()+interval '3 days',now()+interval '3 days 1 hour',1) AS id",[tenant,branch,program])).rows[0].id;
+ const hash=createHash('sha256').update(randomUUID()).digest('hex');
+ const link=(await c.query('SELECT app_private.invite_customer($1,$2,$3,$4,$5) AS id',[tenant,branch,customer,'synthetic@example.test',hash])).rows[0].id;
+ await c.query('SELECT app_private.accept_customer($1,$2,$3)',[member,'synthetic@example.test',hash]);
+ const snapshot=async actor=>(await c.query('SELECT app_private.member_snapshot($1) AS data',[actor])).rows[0].data;
+ assert.equal((await snapshot(member))[0].sessions.length,0);
+ assert.deepEqual(await snapshot(stranger),[]);
+ await c.query('SELECT app_private.set_member_policy($1,$2,$3,true,24)',[tenant,branch,program]);
+ assert.equal((await snapshot(member))[0].sessions.length,1);
+ const key=randomUUID();
+ const request=(await c.query('SELECT app_private.request_booking($1,$2,$3,$4) AS id',[member,link,session,key])).rows[0].id;
+ assert.equal((await c.query('SELECT app_private.request_booking($1,$2,$3,$4) AS id',[member,link,session,key])).rows[0].id,request);
+ assert.equal((await c.query('SELECT id FROM app.bookings')).rowCount,0);
+ await c.query('SELECT app_private.decide_request($1,$2,$3,1,true,$4)',[tenant,branch,request,'Verification approval']);
+ assert.equal((await snapshot(member))[0].bookings.length,1);
+ assert.equal((await snapshot(member))[0].requests[0].status,'approved');
+ const destination=(await c.query("SELECT app_private.create_session($1,$2,$3,now()+interval '4 days',now()+interval '4 days 1 hour',1) AS id",[tenant,branch,program])).rows[0].id;
+ const original=(await snapshot(member))[0].bookings[0];
+ await c.query('SELECT app_private.reschedule_member_booking($1,$2,$3,$4,$5,$6)',[member,link,original.id,destination,original.version,'Verification transfer']);
+ const moved=(await snapshot(member))[0];
+ assert.equal(moved.bookings[0].session_id,destination);
+ assert.equal(moved.bookings[0].version,original.version+1);
+ assert.equal(moved.sessions.find(s=>s.id===session).confirmed,0);
+ assert.equal(moved.sessions.find(s=>s.id===destination).confirmed,1);
+ assert.equal((await c.query("SELECT id FROM app.audit_events WHERE action='booking.rescheduled' AND actor_user_id=$1 AND details->>'source'='member'",[member])).rowCount,1);
+ const confirmed=(await snapshot(member))[0].bookings[0];
+ assert.equal(confirmed.cancellable,true);
+ await c.query('SELECT app_private.cancel_member_booking($1,$2,$3,$4,$5)',[member,link,confirmed.id,confirmed.version,'Verification cancellation']);
+ assert.equal((await snapshot(member))[0].bookings[0].status,'cancelled');
+ assert.equal((await c.query("SELECT id FROM app.bookings WHERE status='confirmed'")).rowCount,0);
+ assert.equal((await c.query("SELECT id FROM app.audit_events WHERE action='booking.cancelled' AND actor_user_id=$1 AND details->>'source'='member'",[member])).rowCount,1);
+ await c.query("SELECT app_private.set_member_policy($1,$2,$3,true,24,'automatic')",[tenant,branch,program]);
+ const autoKey=randomUUID();
+ const auto=(await c.query("SELECT app_private.request_booking($1,$2,$3,$4,'automatic') AS id",[member,link,session,autoKey])).rows[0].id;
+ assert.equal((await c.query("SELECT app_private.request_booking($1,$2,$3,$4,'automatic') AS id",[member,link,session,autoKey])).rows[0].id,auto);
+ const automatic=(await snapshot(member))[0];
+ assert.equal(automatic.requests.find(r=>r.id===auto).status,'approved');
+ assert.equal(automatic.requests.find(r=>r.id===auto).confirmation_mode,'automatic');
+ assert.equal(automatic.sessions.find(s=>s.id===session).confirmed,1);
+ assert.equal((await c.query("SELECT id FROM app.audit_events WHERE action='booking.confirmed' AND actor_user_id=$1 AND details->>'mode'='automatic'",[member])).rowCount,1);
+ await c.query('SELECT app_private.revoke_customer($1,$2,$3)',[tenant,branch,link]);
+ assert.deepEqual(await snapshot(member),[]);
+ assert.equal((await c.query("SELECT id FROM app.audit_events WHERE action IN ('member.invited','member.linked','member.revoked','request.created','request.approved')")).rowCount,7);
+ await c.query("SELECT set_config('app.tenant_id',$1,true)",[randomUUID()]);
+ assert.equal((await c.query('SELECT id FROM app.member_requests')).rowCount,0);
+ console.log('Hosted member linking, visibility, requests, approval/automatic confirmation, member transfer/cancellation, idempotency, revocation, audit and RLS passed.');
+} catch(error) {console.error('Hosted member verification failed; code:',error?.code || 'validation');process.exitCode=1;}
+finally {
+ if(connected) try {await c.query('ROLLBACK');console.log('Rolled back: no verification data committed.');}catch{process.exitCode=1;}
+ await c.end();
+}
