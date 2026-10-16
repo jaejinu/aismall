@@ -68,4 +68,4 @@ Pilot batches require an explicit tenant and branch. `npm run notifications:chec
 
 `npm run notifications:pilot` defaults to read-only preview. Sending requires both an explicit execution flag and enabled worker configuration. See [pilot operations](docs/NOTIFICATION_OUTBOX.md).
 
-Delivery webhooks now verify signatures and persist deduplicated delivery facts separately from send acceptance. The endpoint is disabled by default; dashboard delivery display and live provider setup remain pending.
+Delivery webhooks now verify signatures and persist deduplicated delivery facts separately from send acceptance. The endpoint is disabled by default; the dashboard shows delivery facts and timestamps. Bounce/complaint facts suppress further mail for the same branch customer. Live provider setup and a reviewed suppression-release policy remain pending.

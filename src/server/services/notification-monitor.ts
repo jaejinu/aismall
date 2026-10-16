@@ -5,9 +5,10 @@ import {withTenant} from '../access/tenant';
 import {uuidPattern,type SessionProvider} from '../auth/session';
 import {BookingInputError,type BookingScope} from './bookings';
 export type NotificationStatus='all'|'pending'|'processing'|'delivered'|'dead';
+export type NotificationDelivery={receipt_recorded:boolean;last_received_at:string|null;events:{type:string;occurred_at:string}[]};
 export type NotificationMonitor={
  counts:Record<'pending'|'processing'|'delivered'|'dead'|'expired',number>;
- items:{last_result:{reason:NotificationResultReason;generation:number;attempt:number;created_at:string}|null;redrive_count:number;can_redrive:boolean;id:string;booking_id:string;booking_version:number;event:string;status:Exclude<NotificationStatus,'all'>;attempts:number;
+ items:{delivery:NotificationDelivery;last_result:{reason:NotificationResultReason;generation:number;attempt:number;created_at:string}|null;redrive_count:number;can_redrive:boolean;id:string;booking_id:string;booking_version:number;event:string;status:Exclude<NotificationStatus,'all'>;attempts:number;
  last_error:'temporary'|'permanent'|'lease_expired'|null;created_at:string;available_at:string;finished_at:string|null;expired:boolean;
  customer:string;program:string;starts_at:string}[];
  hasMore:boolean;page:number;status:NotificationStatus;

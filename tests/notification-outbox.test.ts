@@ -473,3 +473,73 @@ test('worker persists real adapter receipt together with accepted outcome',async
  assert.equal(result.accepted,1);
  assert.equal((await admin.query('SELECT 1 FROM app_private.notification_receipts WHERE email_id=$1',[emailId])).rowCount,1);
 });
+
+test('branch monitor includes sanitized delivery facts and last receipt time without exposing provider identifiers',async()=>{
+ await readyWorkerBooking();const job=(await claimScopedBookingNotifications(worker,scope))[0],emailId=randomUUID();
+ const before=(await getNotificationMonitor(db,provider,scope)).items.find(i=>i.id===job.id)!;
+ assert.deepEqual(before.delivery,{receipt_recorded:false,last_received_at:null,events:[]});
+ await recordNotificationReceipt(worker,job.id,job.lease_token,emailId);
+ const pending=(await getNotificationMonitor(db,provider,scope)).items.find(i=>i.id===job.id)!;
+ assert.deepEqual(pending.delivery,{receipt_recorded:true,last_received_at:null,events:[]});
+ const hook=new Pool({connectionString:process.env.TEST_DATABASE_ADMIN_URL,options:'-c role=aismall_notification_webhook'});
+ const id='msg_'+randomUUID(),occurredAt=new Date(Date.now()-60000).toISOString();
+ try{await saveDeliveryEvent(hook,{id,emailId,type:'email.delivered',occurredAt});}finally{await hook.end();}
+ const monitor=await getNotificationMonitor(db,provider,scope,'delivered');
+ const item=monitor.items.find(i=>i.id===job.id)!;
+ assert.equal(item.delivery.events[0].type,'email.delivered');
+ assert.equal(Date.parse(item.delivery.events[0].occurred_at),Date.parse(occurredAt));
+ assert.ok(Date.parse(item.delivery.last_received_at!)>=Date.parse(occurredAt));
+ assert.deepEqual(Object.keys(item.delivery).sort(),['events','last_received_at','receipt_recorded']);
+ for(const secret of [emailId,id,job.lease_token])assert.ok(!JSON.stringify(monitor).includes(secret));
+ const sibling=(await admin.query('SELECT id FROM app.branches WHERE tenant_id=$1 AND id<>$2 LIMIT 1',[scope.tenantId,scope.branchId])).rows[0].id;
+ assert.ok(!(await getNotificationMonitor(db,provider,{...scope,branchId:sibling})).items.some(i=>i.id===job.id));
+ await assert.rejects(getNotificationMonitor(db,provider,{tenantId:randomUUID(),branchId:scope.branchId}));
+});
+
+test('bounce and complaint stop subsequent customer mail without rewriting consent; retries cannot bypass suppression',async()=>{
+ for(const type of ['email.bounced','email.complained']){
+  await readyWorkerBooking();const first=(await claimScopedBookingNotifications(worker,scope))[0],emailId=randomUUID();
+  await recordNotificationReceipt(worker,first.id,first.lease_token,emailId);
+  const hook=new Pool({connectionString:process.env.TEST_DATABASE_ADMIN_URL,options:'-c role=aismall_notification_webhook'});
+  const event={id:'msg_'+randomUUID(),emailId,type,occurredAt:new Date().toISOString()};
+  const consent=(await admin.query('SELECT * FROM app_private.notification_preferences WHERE link_id=$1',[recipientLink])).rows;
+  try{
+   await saveDeliveryEvent(hook,event);await saveDeliveryEvent(hook,event);
+   await readyWorkerBooking();let calls=0;
+   const result=await runNotificationBatch(worker,{enabled:true,scope,limit:1,verifier:()=>async()=>{calls++;return null;},transport:{send:async()=>{calls++;return 'accepted';}}});
+   assert.equal(result.blocked,1);assert.equal(calls,0);
+   const monitor=await getNotificationMonitor(db,provider,scope,'dead');
+   const blocked=monitor.items.find(i=>i.last_result?.reason==='recipient_suppressed')!;assert.ok(blocked);
+   await redriveNotification(db,provider,scope,blocked.id,0);
+   assert.equal((await runNotificationBatch(worker,{enabled:true,scope,limit:1,verifier:validVerifier,transport:{send:async()=>{calls++;return 'accepted';}}})).blocked,1);
+   assert.equal(calls,0);assert.deepEqual((await admin.query('SELECT * FROM app_private.notification_preferences WHERE link_id=$1',[recipientLink])).rows,consent);
+   const otherCustomer=await createCustomer(db,provider,scope,'Unsuppressed fixture');
+   assert.equal((await admin.query('SELECT app_private.notification_recipient_suppressed($1,$2,$3) AS blocked',[scope.tenantId,scope.branchId,otherCustomer])).rows[0].blocked,false);
+   for(const target of [{...scope,tenantId:randomUUID()},{...scope,branchId:randomUUID()}])assert.equal((await admin.query('SELECT app_private.notification_recipient_suppressed($1,$2,$3) AS blocked',[target.tenantId,target.branchId,customer])).rows[0].blocked,false);
+   await assert.rejects(db.query('SELECT app_private.notification_recipient_suppressed($1,$2,$3)',[scope.tenantId,scope.branchId,customer]),code('42501'));
+  }finally{await admin.query('DELETE FROM app_private.notification_delivery_events WHERE email_id=$1',[emailId]);await hook.end();}
+ }
+});
+test('late receipt mapping activates suppression; Auth lookup recheck catches a new complaint while temporary delays do not suppress',async()=>{
+ await readyWorkerBooking();const first=(await claimScopedBookingNotifications(worker,scope))[0],emailId=randomUUID();
+ const hook=new Pool({connectionString:process.env.TEST_DATABASE_ADMIN_URL,options:'-c role=aismall_notification_webhook'});
+ try{
+  await saveDeliveryEvent(hook,{id:'msg_'+randomUUID(),emailId,type:'email.delivery_delayed',occurredAt:new Date().toISOString()});
+  await recordNotificationReceipt(worker,first.id,first.lease_token,emailId);
+  await readyWorkerBooking();const next=(await claimScopedBookingNotifications(worker,scope))[0];
+  assert.equal((await prepareBookingNotification(worker,next.id,next.lease_token)).allowed,true);
+  const result=await authorizeBookingDelivery(worker,next.id,next.lease_token,async()=>{
+   await saveDeliveryEvent(hook,{id:'msg_'+randomUUID(),emailId,type:'email.complained',occurredAt:new Date().toISOString()});
+   return {verifiedEmail:'recipient-'+recipient+'@example.test'};
+  });
+  assert.deepEqual(result,{allowed:false,reason:'recipient_suppressed'});
+  await admin.query('DELETE FROM app_private.notification_delivery_events WHERE email_id=$1',[emailId]);
+  const earlyEmail=randomUUID();
+  await saveDeliveryEvent(hook,{id:'msg_'+randomUUID(),emailId:earlyEmail,type:'email.bounced',occurredAt:new Date().toISOString()});
+  assert.equal((await prepareBookingNotification(worker,next.id,next.lease_token)).allowed,true);
+  // An unmatched event affects no customer until the trusted receipt is attached.
+  await recordNotificationReceipt(worker,next.id,next.lease_token,earlyEmail);
+  await readyWorkerBooking();const final=(await claimScopedBookingNotifications(worker,scope))[0];
+  assert.deepEqual(await prepareBookingNotification(worker,final.id,final.lease_token),{allowed:false,reason:'recipient_suppressed'});
+ }finally{await hook.end();}
+});

@@ -95,6 +95,17 @@ try{
  const delivery=(await c.query('SELECT app_private.notification_delivery_status($1,$2,$3) AS data',[tenant,branch,leased.id])).rows[0].data;
  assert.equal(delivery.receipt_recorded,true);assert.equal(delivery.events[0].type,'email.delivered');
  assert.ok(!JSON.stringify(delivery).includes(receiptEmail));
+ const deliveryMonitor=(await c.query("SELECT app_private.booking_notification_status($1,$2,'delivered',1) AS data",[tenant,branch])).rows[0].data;
+ assert.deepEqual(deliveryMonitor.items.find(i=>i.id===leased.id).delivery,delivery);
+ assert.ok(delivery.last_received_at);
+ assert.ok(!JSON.stringify(deliveryMonitor).includes(receiptEmail));
+ stage='suppression gate';
+ await c.query("SELECT app_private.ingest_notification_delivery($1,$2,'email.bounced',now())",['msg_'+randomUUID(),receiptEmail]);
+ assert.equal((await c.query('SELECT app_private.notification_recipient_suppressed($1,$2,$3) AS blocked',[tenant,branch,customer])).rows[0].blocked,true);
+ assert.equal((await c.query('SELECT app_private.notification_recipient_suppressed($1,$2,$3) AS blocked',[tenant,randomUUID(),customer])).rows[0].blocked,false);
+ const suppressionToken=randomUUID();
+ await c.query("UPDATE app_private.booking_outbox SET status='processing',lease_token=$2,lease_until=now()+interval '1 minute',finished_at=NULL WHERE id=$1",[leased.id,suppressionToken]);
+ assert.deepEqual((await c.query('SELECT app_private.prepare_booking_notification($1,$2) AS data',[leased.id,suppressionToken])).rows[0].data,{allowed:false,reason:'recipient_suppressed'});
  console.log('Hosted outbox, consent gates, result audit and safe monitor projection and scoped pilot and delivery webhook storage passed.');
 }catch(e){console.error('Hosted outbox verification failed at',stage,'code:',e?.code||'validation');process.exitCode=1;}
 finally{

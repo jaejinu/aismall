@@ -21,10 +21,10 @@ export function BookingRecord({ scope, booking: b, sessions, canManage }: Props)
   const destinations = sessions.filter(s => s.id !== b.session_id && s.program_id === b.program_id && s.movable && s.confirmed < s.capacity);
   const identity = <><input type="hidden" name="booking" value={b.id} /><input type="hidden" name="version" value={b.version} /></>;
   return <li className="border-b border-line bg-surface transition-colors hover:bg-subtle/40 last:border-b-0">
-    <div className="grid items-center gap-3 px-4 py-5 md:grid-cols-[1.2fr_1fr_1.2fr_100px_80px]">
-      <p className="text-body-sm">{date(b.starts_at)}</p>
+    <div className="grid grid-cols-2 items-center gap-3 px-4 py-4 md:grid-cols-[1.2fr_1fr_1.2fr_100px_80px]">
+      <p className="col-span-2 text-body-sm md:col-span-1">{date(b.starts_at)}</p>
       <p className="flex items-center gap-2 text-label-md"><span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-info-bg text-label-sm text-info-fg">{b.customer.slice(0,1)}</span>{b.customer}</p>
-      <p className="text-body-sm">{b.program}</p>
+      <p className="text-body-sm text-fg-secondary">{b.program}</p>
       <span>{b.status==='confirmed'?<StatusChip status="confirmed"/>:<span className="rounded-md bg-subtle px-2 py-1 text-label-sm text-fg-muted">취소됨</span>}</span>
       <p className="text-label-sm text-fg-secondary">{b.status==='confirmed'?attendanceLabels[b.attendance]:'—'}</p>
     </div>

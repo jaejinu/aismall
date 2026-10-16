@@ -49,7 +49,7 @@ npm test
 npm run build
 ```
 
-`npm test`는 설정/CLI 테스트 17개와 DB/서명 테스트 108개를 실행해요. `npm run test:config`는 설정 테스트만, `npm run test:db`는 DB 테스트만 실행해요. `scripts/test-db.mjs`가 임의 이름·임의 localhost 포트의 임시 PostgreSQL 17 컨테이너를 만들어요. 로컬/운영 `DATABASE_URL`을 테스트 대상으로 사용하지 않아요. 마이그레이션을 두 번 적용해 재실행을 확인하고 테스트 후 자신의 컨테이너만 삭제해요. 데이터는 tmpfs에 저장돼요. Docker 경로는 `DOCKER_BIN`으로 지정할 수 있어요.
+`npm test`는 설정/CLI 테스트 17개와 DB/서명/표시 테스트 113개를 실행해요. `npm run test:config`는 설정 테스트만, `npm run test:db`는 DB 테스트만 실행해요. `scripts/test-db.mjs`가 임의 이름·임의 localhost 포트의 임시 PostgreSQL 17 컨테이너를 만들어요. 로컬/운영 `DATABASE_URL`을 테스트 대상으로 사용하지 않아요. 마이그레이션을 두 번 적용해 재실행을 확인하고 테스트 후 자신의 컨테이너만 삭제해요. 데이터는 tmpfs에 저장돼요. Docker 경로는 `DOCKER_BIN`으로 지정할 수 있어요.
 
 테스트는 제한된 실행 계정으로 조직/지점 격리, 인증 거부, 역할별 변경 권한, 같은 계정의 조직 전환, 커밋·롤백 뒤 컨텍스트 제거, 복합 FK, 권한 회수, 두 연결의 동시 버전 충돌, 감사 실패 롤백, 처리 중 세션 만료를 검사해요. 관리자 연결은 fixture 준비·검증·권한 회수 시뮬레이션에만 사용해요.
 
@@ -74,7 +74,7 @@ npm run build
 
 ## 로그인과 빌드 확인
 
-[로그인·온보딩 안내](AUTH_ONBOARDING.md)에 개발 계정 준비, 화면 주소, 보안 경계와 검증 결과를 정리했어요. 현재 테스트는 설정/CLI 17개·DB/서명 108개예요. 기본 Turbopack이 환경 포트 오류로 실패하면 `npm run build -- --webpack`으로 프로덕션 빌드를 확인할 수 있어요. 기본 빌드 설정은 유지해요.
+[로그인·온보딩 안내](AUTH_ONBOARDING.md)에 개발 계정 준비, 화면 주소, 보안 경계와 검증 결과를 정리했어요. 현재 테스트는 설정/CLI 17개·DB/서명/표시 113개예요. 기본 Turbopack이 환경 포트 오류로 실패하면 `npm run build -- --webpack`으로 프로덕션 빌드를 확인할 수 있어요. 기본 빌드 설정은 유지해요.
 
 ## 직원 관리 검증
 
@@ -86,7 +86,7 @@ npm run build
 
 ## 회원 신청 검증
 
-[회원 신청](MEMBER_BOOKINGS.md)의 권한·동시성 검사를 포함해 총 125개 테스트예요. `node scripts/verify-hosted-members.mjs PROJECT_REF`는 개발 runtime으로 임시 고객 연결·신청·승인·자동 확정·회원 변경/취소·회수·격리·감사를 확인하고 전체 롤백해요. 실제 두 계정 브라우저 검증과는 별개예요.
+[회원 신청](MEMBER_BOOKINGS.md)의 권한·동시성 검사를 포함해 총 130개 테스트예요. `node scripts/verify-hosted-members.mjs PROJECT_REF`는 개발 runtime으로 임시 고객 연결·신청·승인·자동 확정·회원 변경/취소·회수·격리·감사를 확인하고 전체 롤백해요. 실제 두 계정 브라우저 검증과는 별개예요.
 
 ## 알림 대기열 검증
 

@@ -28,7 +28,7 @@ export async function finishBookingNotification(pool:Pool,jobId:string,leaseToke
  return workerTransaction(pool,async db=>{await db.query('SELECT app_private.finish_booking_notification($1,$2,$3)',[jobId,leaseToken,outcome]);});
 }
 
-export type NotificationEligibility={allowed:false;reason:'inactive_scope'|'superseded'|'expired_event'|'recipient_unavailable'|'consent_missing'|'before_consent'|'channel_disabled'}|{allowed:true;channel:'email';recipient:string;recipient_user_id:string;idempotency_key:string;lease_until:string};
+export type NotificationEligibility={allowed:false;reason:'inactive_scope'|'superseded'|'expired_event'|'recipient_unavailable'|'consent_missing'|'before_consent'|'channel_disabled'|'recipient_suppressed'}|{allowed:true;channel:'email';recipient:string;recipient_user_id:string;idempotency_key:string;lease_until:string};
 /** Invoke immediately before the provider call; do not cache or log the recipient.
  * The transport must also reverify the current Auth email and its verified status.
  * No transport is connected yet. This check does not eliminate external-send races.
