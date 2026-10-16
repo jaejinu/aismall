@@ -6,23 +6,38 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run test:config && npm run test:db",
+    "test:db": "node scripts/test-db.mjs",
+    "db:migrate": "node scripts/migrate.mjs",
+    "test:config": "node --test tests/provider-config.test.mjs tests/notification-config.test.mjs tests/notification-pilot.test.mjs",
+    "provider:check": "node scripts/check-provider.mjs",
+    "notifications:pilot": "node --conditions=react-server --import tsx scripts/notification-pilot.mjs",
+    "notifications:check": "node scripts/check-notifications.mjs"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.117.3",
     "lucide-react": "^1.52.0",
     "next": "16.3.8",
+    "pg": "^8.23.1",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "server-only": "^0.0.1",
+    "svix": "^2.8.0",
     "tailwind-merge": "^3.7.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.8",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^5"
   }
 }
